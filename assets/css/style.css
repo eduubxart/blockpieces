@@ -1,14 +1,82 @@
-body {
- margin: 0;
- padding: 0;
- background-image: url("/assets/css/style.css");
- background-size: cover;
- background-repeat: no-repeat;
- background-position: center;
- image-rendering: pixelated;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.pixelated {
- image-rendering: pixelated;
- width: 1920px;
- height: 1080px;
+
+button {
+    cursor: pointer
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+body {
+    height: 100vh;
+}
+
+.game-container {
+    padding: 16px;
+}
+
+.buttons-container {
+    margin-bottom: 16px;
+    width: 280px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* significa que esses dois botões vão ter o mesmo tamanho */
+    gap: 8px;
+}
+.buttons-container button {
+    border: none;
+    background: aliceblue;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 7px;
+    height: 32px;
+
+    transition: filter 0.2s; /*faz com que a transição do filtro seja feita em 0.2 segundos */
+}
+.buttons-container button:hover {/* qunado o mouse passar por cima do botão */
+   filter: brightness(0.8);/*fz com o que o botão fique mais escuro quando o mouse passar por cima */
+}
+
+.content-continer {
+    display: flex;
+}
+.grid {
+    width: 200px;
+    height: 400px;
+    background: #333;
+    display: flex;
+    flex-wrap: wrap;/*deixa os elementos dentro da grid quebrando a linha quando necessário */
+}
+.grid div {
+    width: 20px;
+    height: 2opx;
+}
+
+.container-right {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.mini-grid {
+    width: 120px;
+    height: 120px;
+    background: #333;
+    display: flex;
+    flex-wrap: wrap;
+}
+.mini-grid div {
+    width: 20px;
+    height: 20px;
+}
+.container-right h2 {
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 24px;
 }
