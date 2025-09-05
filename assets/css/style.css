@@ -1,0 +1,14 @@
+body {
+ margin: 0;
+ padding: 0;
+ background-image: url("/assets/css/style.css");
+ background-size: cover;
+ background-repeat: no-repeat;
+ background-position: center;
+ image-rendering: pixelated;
+}
+.pixelated {
+ image-rendering: pixelated;
+ width: 1920px;
+ height: 1080px;
+}
