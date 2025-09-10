@@ -9,9 +9,7 @@ const vacant = "#FF6E30"// cor do quadro vazio
 
 // desenha o quadro
 function desenhaQuad(x,y,cor){// função que desenha o quadrado
-    con.fillStyle = cor;// 
-    con.fillRect(x*sq,y*sq,sq,sq);// desenha o retangulo
-
-    con.strokeStyle = "#FFC154";// cor da borda
-    con.strokeRect(x*sq,y*sq,sq,sq);
+   con.drawImage(Image, x*sq, y*sq, sq, sq);//desenha o png na posição certa.
 }
+let T_block = new Image();// cria um novo objeto de imagem
+T_block.src = '/assets/img/T.png';// define o src da imagem
