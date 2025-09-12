@@ -1,0 +1,67 @@
+
+
+@font-face {
+    font-family: 'PixelGameFont';
+    src: url('../fonts/PixelGameFont.ttf') format('truetype');
+  }
+  
+  body {
+    font-family: 'PixelGameFont', sans-serif;
+    background-color: black;
+    background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
+    animation: moveStars 25s linear infinite;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  @keyframes moveStars {
+    0% { background-position: 0 0, 25px 25px; }
+    25% { background-position: 0 50px, 25px 75px; }
+    35% { background-position: 0 100px, 25px 125px; }
+    65% { background-position: 0 150px, 25px 175px; }
+    100% { background-position: 0 200px, 25px 225px; }
+  }
+  
+  .title {
+    margin-top: 20px;
+  }
+  
+  h1 {
+    font-size: 50px;
+    animation: rainbow 5s infinite;
+  }
+  
+  @keyframes rainbow {
+    0% { color: rgb(255, 0, 0); }
+    20% { color: orange; }
+    40% { color: yellow; }
+    60% { color: green; }
+    80% { color: blue; }
+    100% { color: violet; }
+  }
+  
+  #score {
+    display: inline-block;
+    font-size: 20px;
+    margin: 20px 0;
+  }
+  
+  .back {
+    margin-top: 20px;
+  }
+  
+  canvas {
+    display: block;
+    margin: auto;
+    background-color: #0e0e0e;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgb(255, 255, 255);
+    border-radius: 5%;
+  }
+  

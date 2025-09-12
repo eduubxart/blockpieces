@@ -2,105 +2,25 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>blockpieces</title>
-	<style>
-		@font-face {
-			font-family: 'PixelGameFont';
-			src: url('assets/fonts/PixelGameFont.ttf') format('truetype');
-		}
-
-		body {
-			font-family: 'PixelGameFont', sans-serif;
-			background-color: black;
-			background-image:
-				radial-gradient(white 1px, transparent 1px);
-				radial-gradient(white 1px, transparent 1px);
-			background-size: 00px 50px;
-			background-position: 0 0, 0px 19px;
-		}
-		@keyframes moveStars {
-	0% { background-position: 0 0, 25px 25px; }/*posições iniciais das estrelas*/
-	25% { background-position: 0 50px, 25px 75px; }/*posições intermediárias das estrelas*/
-	35% { background-position: 0 100px, 25px 125px; }/*posições intermediárias das estrelas*/
-	65% { background-position: 0 150px, 25px 175px; }/*posições intermediárias das estrelas*/
-	100% { background-position: 0 200px, 25px 225px; }/*posições finais das estrelas*/
-}
-
-body {
-  background-color: black;
-  background-image:
-    radial-gradient(white 00px, transparent 1px),
-    radial-gradient(white 00px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: 0 0, 25px 25px;
-  animation: moveStars 25s linear infinite;
-}
-
-		.title {
-			position: absolute;
-			top: 20px;
-			left: 50%;
-			transform: translateX(-50%);
-		}
-
-		h1 {
-  text-align: center;
-  font-size: 50px;
-  animation: rainbow 5s infinite;
-}
-
-@keyframes rainbow {
-  0% { color: rgb(255, 0, 0); }
-  20% { color: orange; }
-  40% { color: yellow; }
-  60% { color: green; }
-  80% { color: blue; }
-  100% { color: violet; }
-}
-
-		
-		#score {
-			display: inline-block
-		}
-
-		.back {
-			display: block;
-			margin-top: 150px;
-		}
-
-		div {
-			color: white;
-			font-family: 'PixelGameFont', sans-serif;
-			font-size: 20px;
-			text-align: center;
-			text-align: center;
-		}
-
-		canvas {
-			display: block;
-			margin: auto;
-			background-color: #0e0e0e;
-			border: 2px solid white;
-			box-shadow: 0 0 10px rgb(255, 255, 255);
-			border-radius: 5%;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blockpieces</title>
+    <link rel="stylesheet" href="/assets/styles/style.css">
 </head>
 
 <body>
-	<div class="back">
-		<div id="score">Score: 0</div>
-		<canvas id="gameCanvas" width="300" height="600"></canvas>
-	</div>
-	<div>
-		<div class="title">
-			<h1>blockpieces</h1>
-		</div>
+    <div class="title">
+        <h1>blockpieces</h1>
+    </div>
 
-	<script src="assets/js/matrizes.js"></script>
-	<script src="assets/js/tetris.js"></script>
+    <div id="score">Score: 0</div>
+
+    <div class="back">
+        <canvas id="gameCanvas" width="300" height="600"></canvas>
+    </div>
+
+    <script src="/src/js/matrizes.js"></script>
+    <script src="/src/js/tetris.js"></script>
 </body>
 
 </html>
