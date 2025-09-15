@@ -9,9 +9,9 @@
     font-family: 'PixelGameFont', sans-serif;
     background-color: black;
     background-image:
-        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(rgb(255, 255, 255) 1px, transparent 1px),
         radial-gradient(white 1px, transparent 1px);
-    background-size: 100px 100px;
+    background-size: 200px 200px;
     background-position: 0 0, 2px 2px;
     animation: moveStars 25s linear infinite;
     color: white;
