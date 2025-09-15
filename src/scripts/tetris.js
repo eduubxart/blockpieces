@@ -1,34 +1,31 @@
-const cvs = document.getElementById("tetris");
+const cvs = document.getElementById("gameCanvas");
 const con = cvs.getContext("2d");
 const scoreSist = document.getElementById("score");
 
 const linha = 20;
 const col = 10;
-const sq = 20;
+const sq = 30;
 const quad = "WHITE";
 
-// Desenhar os quadrados
-function desenhaQuad(x,y,cor){
-    con.fillStyle = cor;
-    con.fillRect(x*sq,y*sq,sq,sq);
-
-    con.strokeStyle = "BLACK";
-    con.strokeRect(x*sq,y*sq,sq,sq);
-}
-
-// Cria o tabuleiro
 let bord = [];
-for( r = 0; r <linha; r++){
+for(let r=0; r<linha; r++){
     bord[r] = [];
-    for(c = 0; c < col; c++){
+    for(let c=0; c<col; c++){
         bord[r][c] = quad;
     }
 }
-// Desenha o tabuleiro
+
+function desenhaQuad(x, y, cor){
+    con.fillStyle = cor;
+    con.fillRect(x*sq, y*sq, sq, sq);
+    con.strokeStyle = "BLACK";
+    con.strokeRect(x*sq, y*sq, sq, sq);
+}
+
 function tab(){
-    for( r = 0; r <linha; r++){
-        for(c = 0; c < col; c++){
-            desenhaQuad(c,r,bord[r][c]);
+    for(let r=0; r<linha; r++){
+        for(let c=0; c<col; c++){
+            desenhaQuad(c, r, bord[r][c]);
         }
     }
 }
@@ -44,68 +41,61 @@ const pecas = [
     [J,"orange"]
 ];
 
-// gerar peças aleatórias
 function geraPecas(){
-    let r = randomN = Math.floor(Math.random() * pecas.length) // 0 -> 6
-    return new Piece( pecas[r][0],pecas[r][1]);
+    let r = Math.floor(Math.random() * pecas.length);
+    return new Piece(pecas[r][0], pecas[r][1]);
 }
 
 let p = geraPecas();
+let score = 0;
+let dropStart = Date.now();
+let gameOver = false;
 
-function Piece(tetromino,cor){
+function Piece(tetromino, cor){
     this.tetromino = tetromino;
     this.cor = cor;
-    
-    this.tetrominoN = 0; // Começa do primeiro padrão
+    this.tetrominoN = 0;
     this.ativarTetromino = this.tetromino[this.tetrominoN];
-    
     this.x = 3;
     this.y = -2;
 }
 
-// função de preenchimento
 Piece.prototype.fill = function(cor){
-    for( r = 0; r < this.ativarTetromino.length; r++){
-        for(c = 0; c < this.ativarTetromino.length; c++){
-            if( this.ativarTetromino[r][c]){
-                desenhaQuad(this.x + c,this.y + r, cor);
+    for(let r=0; r<this.ativarTetromino.length; r++){
+        for(let c=0; c<this.ativarTetromino.length; c++){
+            if(this.ativarTetromino[r][c]){
+                desenhaQuad(this.x+c, this.y+r, cor);
             }
         }
     }
 }
+Piece.prototype.draw = function(){ this.fill(this.cor); }
+Piece.prototype.unDraw = function(){ this.fill(quad); }
 
-// Desenha
-Piece.prototype.draw = function(){
-    this.fill(this.cor);
+Piece.prototype.colisao = function(x, y, piece){
+    for(let r=0; r<piece.length; r++){
+        for(let c=0; c<piece.length; c++){
+            if(!piece[r][c]) continue;
+            let newX = this.x+c+x;
+            let newY = this.y+r+y;
+            if(newX<0 || newX>=col || newY>=linha) return true;
+            if(newY<0) continue;
+            if(bord[newY][newX] != quad) return true;
+        }
+    }
+    return false;
 }
 
-// Apaga
-Piece.prototype.unDraw = function(){
-    this.fill(quad);
-}
-
-// Move para baixo
 Piece.prototype.moveDown = function(){
     if(!this.colisao(0,1,this.ativarTetromino)){
         this.unDraw();
         this.y++;
         this.draw();
-    }else{
-        // Trava e gera uma nova
+    } else {
         this.lock();
         p = geraPecas();
     }
-    
 }
-// Mover para a direita
-Piece.prototype.moveRight = function(){
-    if(!this.colisao(1,0,this.ativarTetromino)){
-        this.unDraw();
-        this.x++;
-        this.draw();
-    }
-}
-// Mover para a esquerda
 Piece.prototype.moveLeft = function(){
     if(!this.colisao(-1,0,this.ativarTetromino)){
         this.unDraw();
@@ -113,124 +103,78 @@ Piece.prototype.moveLeft = function(){
         this.draw();
     }
 }
-// Gira
-Piece.prototype.rotate = function(){
-    let novoPad = this.tetromino[(this.tetrominoN + 1)%this.tetromino.length];
-    let kick = 0;
-    
-    if(this.colisao(0,0,novoPad)){
-        if(this.x > col/2){
-            kick = -1; 
-        }else{
-            kick = 1; 
-        }
+Piece.prototype.moveRight = function(){
+    if(!this.colisao(1,0,this.ativarTetromino)){
+        this.unDraw();
+        this.x++;
+        this.draw();
     }
-    
+}
+Piece.prototype.rotate = function(){
+    let novoPad = this.tetromino[(this.tetrominoN +1) % this.tetromino.length];
+    let kick = 0;
+    if(this.colisao(0,0,novoPad)){
+        kick = (this.x > col/2)? -1:1;
+    }
     if(!this.colisao(kick,0,novoPad)){
         this.unDraw();
         this.x += kick;
-        this.tetrominoN = (this.tetrominoN + 1)%this.tetromino.length; // (0+1)%4 => 1
+        this.tetrominoN = (this.tetrominoN +1)%this.tetromino.length;
         this.ativarTetromino = this.tetromino[this.tetrominoN];
         this.draw();
     }
 }
 
-let score = 0;
-
 Piece.prototype.lock = function(){
-    for( r = 0; r < this.ativarTetromino.length; r++){
-        for(c = 0; c < this.ativarTetromino.length; c++){
-            if( !this.ativarTetromino[r][c]){
-                continue;
-            }
-            if(this.y + r < 0){
-                alert("Fim");
-                gameOver = true;
+    for(let r=0;r<this.ativarTetromino.length;r++){
+        for(let c=0;c<this.ativarTetromino.length;c++){
+            if(!this.ativarTetromino[r][c]) continue;
+            if(this.y+r<0){
+                alert("Fim de jogo");
+                gameOver=true;
                 break;
             }
             bord[this.y+r][this.x+c] = this.cor;
         }
     }
-    // Remove linhas inteiras
-    for(r = 0; r < linha; r++){
-        let islinhaFull = true;
-        for( c = 0; c < col; c++){
-            islinhaFull = islinhaFull && (bord[r][c] != quad);
+    for(let r=0;r<linha;r++){
+        let isLinhaFull = true;
+        for(let c=0;c<col;c++){
+            isLinhaFull = isLinhaFull && (bord[r][c] != quad);
         }
-        if(islinhaFull){
-            for( y = r; y > 1; y--){
-                for( c = 0; c < col; c++){
+        if(isLinhaFull){
+            for(let y=r; y>0; y--){
+                for(let c=0;c<col;c++){
                     bord[y][c] = bord[y-1][c];
                 }
             }
-            for( c = 0; c < col; c++){
-                bord[0][c] = quad;
+            for(let c=0;c<col;c++){
+                bord[0][c]=quad;
             }
-            // Adiciona +10 aos pontos
-            score += 10;
+            score+=10;
         }
     }
-    // Atualiza o tab
     tab();
-    
-    // Atualiza a pontuação
-    scoreSist.innerHTML = score;
+    scoreSist.innerHTML = "Score: " + score;
 }
-// Função de colisão
 
-Piece.prototype.colisao = function(x,y,piece){
-    for( r = 0; r < piece.length; r++){
-        for(c = 0; c < piece.length; c++){
-            // Caso esteja vazio, pula
-            if(!piece[r][c]){
-                continue;
-            }
-            let newX = this.x + c + x;
-            let newY = this.y + r + y;
-            
-            if(newX < 0 || newX >= col || newY >= linha){
-                return true;
-            }
-            if(newY < 0){
-                continue;
-            }
-            if( bord[newY][newX] != quad){
-                return true;
-            }
-        }
-    }
-    return false;
-}
-// Controle
+// Controles
+document.addEventListener("keydown", function(event){
+    if(event.keyCode==37){ p.moveLeft(); dropStart=Date.now(); }
+    else if(event.keyCode==38){ p.rotate(); dropStart=Date.now(); }
+    else if(event.keyCode==39){ p.moveRight(); dropStart=Date.now(); }
+    else if(event.keyCode==40){ p.moveDown(); }
+});
 
-document.addEventListener("keydown",CONTROL);
-
-function CONTROL(event){
-    if(event.keyCode == 37){
-        p.moveLeft();
-        dropStart = Date.now();
-    }else if(event.keyCode == 38){
-        p.rotate();
-        dropStart = Date.now();
-    }else if(event.keyCode == 39){
-        p.moveRight();
-        dropStart = Date.now();
-    }else if(event.keyCode == 40){
-        p.moveDown();
-    }
-}
-// Dropar as peças a cada 1 segundo.
-
-let dropStart = Date.now();
-let gameOver = false;
+// Função de queda
 function drop(){
     let now = Date.now();
     let delta = now - dropStart;
-    if(delta > 1000){
+    if(delta>1000){
         p.moveDown();
         dropStart = Date.now();
     }
-    if( !gameOver){
+    if(!gameOver){
         requestAnimationFrame(drop);
     }
 }
