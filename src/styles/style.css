@@ -11,8 +11,8 @@
     background-image:
         radial-gradient(white 1px, transparent 1px),
         radial-gradient(white 1px, transparent 1px);
-    background-size: 50px 50px;
-    background-position: 0 0, 25px 25px;
+    background-size: 100px 100px;
+    background-position: 0 0, 2px 2px;
     animation: moveStars 25s linear infinite;
     color: white;
     text-align: center;
