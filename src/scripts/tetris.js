@@ -16,10 +16,13 @@ for(let r=0; r<linha; r++){
 }
 
 function desenhaQuad(x, y, cor){
-    con.fillStyle = cor;// cor do quadrado
-	con.fillRect(x *tam, y *tam, tam, tam);// quadrado
-    
+    con.fillStyle = cor;
+    con.shadowColor = "rgba(0,0,0,0.3)";
+    con.shadowBlur = 5;
+    con.fillRect(x * tam, y * tam, tam, tam);
+    con.shadowBlur = 0; // reseta pra não afetar outros desenhos
 }
+
 
 function tab(){
     for(let r=20; r<linha; r++){// linhas
