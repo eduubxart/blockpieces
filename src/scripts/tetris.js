@@ -17,7 +17,6 @@ for(let r=0; r<linha; r++){
 
 function desenhaQuad(x, y, cor){
     con.fillStyle = cor;
-    con.shadowColor = "rgba(0,0,0,0.3)";
     con.shadowBlur = 5;
     con.fillRect(x * sq, y * sq, sq, sq); // usei sq
     con.shadowBlur = 0;
