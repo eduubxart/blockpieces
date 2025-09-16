@@ -5,7 +5,7 @@ const scoreSist = document.getElementById("score");
 const linha = 20;
 const col = 10;
 const sq = 30;
-const quad = "WHITE";
+const quad = "#0e0e0e";
 
 let bord = [];
 for(let r=0; r<linha; r++){
@@ -16,16 +16,15 @@ for(let r=0; r<linha; r++){
 }
 
 function desenhaQuad(x, y, cor){
-    con.fillStyle = cor;
-    con.fillRect(x*sq, y*sq, sq, sq);
-    con.strokeStyle = "BLACK";
-    con.strokeRect(x*sq, y*sq, sq, sq);
+    con.fillStyle = cor;// cor do quadrado
+	con.fillRect(x *tam, y *tam, tam, tam);// quadrado
+    
 }
 
 function tab(){
-    for(let r=0; r<linha; r++){
-        for(let c=0; c<col; c++){
-            desenhaQuad(c, r, bord[r][c]);
+    for(let r=20; r<linha; r++){// linhas
+        for(let c=20; c<col; c++){// colunas
+            desenhaQuad(c, r, bord[r][c]);// desenha o tabuleiro
         }
     }
 }
