@@ -19,18 +19,19 @@ function desenhaQuad(x, y, cor){
     con.fillStyle = cor;
     con.shadowColor = "rgba(0,0,0,0.3)";
     con.shadowBlur = 5;
-    con.fillRect(x * tam, y * tam, tam, tam);
-    con.shadowBlur = 0; // reseta pra não afetar outros desenhos
+    con.fillRect(x * sq, y * sq, sq, sq); // usei sq
+    con.shadowBlur = 0;
 }
 
-
 function tab(){
-    for(let r=20; r<linha; r++){// linhas
-        for(let c=20; c<col; c++){// colunas
-            desenhaQuad(c, r, bord[r][c]);// desenha o tabuleiro
+    for(let r=0; r<linha; r++){ // linhas
+        for(let c=0; c<col; c++){ // colunas
+            desenhaQuad(c, r, bord[r][c]);
         }
     }
 }
+
+
 tab();
 
 const pecas = [
