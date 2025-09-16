@@ -5,7 +5,7 @@ const scoreSist = document.getElementById("score");
 const linha = 20;
 const col = 10;
 const sq = 30;
-const quad = "WHITE";
+const quad = "#0e0e0e";
 
 let bord = [];
 for(let r=0; r<linha; r++){
@@ -17,18 +17,21 @@ for(let r=0; r<linha; r++){
 
 function desenhaQuad(x, y, cor){
     con.fillStyle = cor;
-    con.fillRect(x*sq, y*sq, sq, sq);
-    con.strokeStyle = "BLACK";
-    con.strokeRect(x*sq, y*sq, sq, sq);
+    con.shadowColor = "rgba(0,0,0,0.3)";
+    con.shadowBlur = 5;
+    con.fillRect(x * sq, y * sq, sq, sq); // usei sq
+    con.shadowBlur = 0;
 }
 
 function tab(){
-    for(let r=0; r<linha; r++){
-        for(let c=0; c<col; c++){
+    for(let r=0; r<linha; r++){ // linhas
+        for(let c=0; c<col; c++){ // colunas
             desenhaQuad(c, r, bord[r][c]);
         }
     }
 }
+
+
 tab();
 
 const pecas = [
