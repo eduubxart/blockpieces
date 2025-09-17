@@ -1,5 +1,35 @@
-<!--menu inicial-->
-<h1>blockpieces</h1>
-<a href="game.html"></a>
-<a href="ranking.html"></a>
-<a href="login.html"></a>
+<!DOCTYPE html><!--pagina do jogo-->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blockpieces</title>
+    <link rel="stylesheet" href="/src/styles/style.css">
+</head>
+
+<body>
+    <div class="title">
+        <h1>blockpieces</h1>
+    </div>
+
+    <div id="score">Score: 0</div>
+    <div id="game-over-screen">
+        GAME OVER
+        <button id="restart-btn">Reiniciar</button>
+      </div>
+
+    <div class="back">
+        <canvas id="gameCanvas" width="300" height="600"></canvas>
+    </div>
+
+
+    <script src="src/scripts/matrizes.js"></script>
+    <script src="src/scripts/tetris.js"></script>
+
+    <script src="/src/scripts/matrizes.js"></script>
+    <script src="/src/scripts/tetris.js"></script>
+
+</body>
+
+</html>

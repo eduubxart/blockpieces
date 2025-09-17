@@ -30,7 +30,6 @@ function tab(){
     }
 }
 
-
 tab();
 
 const pecas = [
@@ -52,6 +51,10 @@ let p = geraPecas();
 let score = 0;
 let dropStart = Date.now();
 let gameOver = false;
+
+// Pega elementos do game over
+const gameOverScreen = document.getElementById('game-over-screen');
+const restartBtn = document.getElementById('restart-btn');
 
 function Piece(tetromino, cor){
     this.tetromino = tetromino;
@@ -95,7 +98,9 @@ Piece.prototype.moveDown = function(){
         this.draw();
     } else {
         this.lock();
-        p = geraPecas();
+        if(!gameOver){
+            p = geraPecas();
+        }
     }
 }
 Piece.prototype.moveLeft = function(){
@@ -132,9 +137,10 @@ Piece.prototype.lock = function(){
         for(let c=0;c<this.ativarTetromino.length;c++){
             if(!this.ativarTetromino[r][c]) continue;
             if(this.y+r<0){
-                alert("Fim de jogo");
-                gameOver=true;
-                break;
+                // Game over
+                gameOver = true;
+                gameOverScreen.style.visibility = 'visible';
+                return; // sai pra evitar mais ações
             }
             bord[this.y+r][this.x+c] = this.cor;
         }
@@ -162,6 +168,8 @@ Piece.prototype.lock = function(){
 
 // Controles
 document.addEventListener("keydown", function(event){
+    if(gameOver) return; // desativa controles se game over
+
     if(event.keyCode==37){ p.moveLeft(); dropStart=Date.now(); }
     else if(event.keyCode==38){ p.rotate(); dropStart=Date.now(); }
     else if(event.keyCode==39){ p.moveRight(); dropStart=Date.now(); }
@@ -170,15 +178,46 @@ document.addEventListener("keydown", function(event){
 
 // Função de queda
 function drop(){
+    if(gameOver) return; // para o loop se game over
+
     let now = Date.now();
     let delta = now - dropStart;
     if(delta>1000){
         p.moveDown();
         dropStart = Date.now();
     }
-    if(!gameOver){
-        requestAnimationFrame(drop);
-    }
+    requestAnimationFrame(drop);
 }
 
 drop();
+
+// Função para reiniciar o jogo
+function restartGame(){
+    gameOverScreen.style.visibility = 'hidden';
+
+    // Reseta tabuleiro
+    for(let r=0; r<linha; r++){
+        for(let c=0; c<col; c++){
+            bord[r][c] = quad;
+        }
+    }
+
+    // Reseta variáveis
+    score = 0;
+    scoreSist.innerHTML = "Score: " + score;
+    gameOver = false;
+
+    // Nova peça
+    p = geraPecas();
+
+    // Redesenha o tabuleiro
+    tab();
+
+    // Reinicia o loop
+    dropStart = Date.now();
+    drop();
+}
+
+// Evento para botão reiniciar
+restartBtn.addEventListener('click', restartGame);
+
