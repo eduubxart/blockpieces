@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'PixelGameFont';
-    src: url('../fonts/PixelGameFont.ttf') format('truetype');
+    src: url('assets/font/PixelGameFont.ttf') format('truetype');
   }
   
   body {
