@@ -107,3 +107,12 @@
     background-color: darkred;
     box-shadow: 0 0 20px darkred;
   }
+  #timer {
+    font-family: 'PixelGameFont', sans-serif;
+    font-size: 24px;
+    margin: 10px auto;
+    color: white;
+    text-shadow: 0 0 5px cyan;
+    width: fit-content;
+  }
+  
