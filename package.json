@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"nodemon server.js\" \"vite\"",
     "start": "node server.js"
@@ -24,6 +25,7 @@
     "vite": "^7.1.5"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
   }
 }
