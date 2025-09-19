@@ -2,32 +2,39 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blockpieces</title>
-    <link rel="stylesheet" href="/src/styles/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>blockpieces</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
 </head>
 
 <body>
-    <div class="title">
-        <h1>blockpieces</h1>
-    </div>
+  <div class="title">
+    <h1>blockpieces</h1>
+  </div>
 
-    <div id="score">Score: 0</div>
-    <div id="timer">Tempo: 120s</div>
-    <div id="game-over-screen">
-        GAME OVER
-        <button id="restart-btn">Reiniciar</button>
-      </div>
+  <div id="score">Score: 0</div>
+  <div id="timer">Tempo: 120s</div>
 
+  <div id="game-over-screen">
+    GAME OVER
+    <button id="restart-btn">Reiniciar</button>
+  </div>
+
+  <!-- Jogo e próximo bloco lado a lado -->
+  <div class="game-area">
     <div class="back">
-        <canvas id="gameCanvas" width="300" height="600"></canvas>
+      <canvas id="gameCanvas" width="300" height="600"></canvas>
     </div>
 
+    <!-- Preview da próxima peça -->
+    <div id="sidebar">
+      <h3>Próxima peça:</h3>
+      <canvas id="nextPiece" width="120" height="120"></canvas>
+    </div>
+  </div>
 
-    <script src="/src/scripts/matrizes.js"></script>
-    <script src="/src/scripts/tetris.js"></script>
-
+  <script src="/src/scripts/matrizes.js"></script>
+  <script src="/src/scripts/tetris.js"></script>
 </body>
-
 </html>

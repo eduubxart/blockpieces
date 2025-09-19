@@ -115,4 +115,81 @@
     text-shadow: 0 0 5px cyan;
     width: fit-content;
   }
+  .game-area {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+  }
   
+  #gameCanvas {
+    background: #111;
+    border: 2px solid #555;
+  }
+  
+  #sidebar {
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  #nextPiece {
+    background: #222;
+    border: 2px solid #555;
+    margin-top: 10px;
+    
+  }
+  /* ======== LOGIN ======== */
+.login-screen {
+  font-family: 'PixelGameFont', sans-serif;
+  background-color: black;
+  background-image:
+      radial-gradient(rgb(255, 255, 255) 1px, transparent 1px),
+      radial-gradient(white 1px, transparent 1px);
+  background-size: 200px 200px;
+  background-position: 0 0, 2px 2px;
+  animation: moveStars 25s linear infinite;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;  /* ocupa a tela inteira */
+  margin: 0;
+  padding: 0;
+  text-align: center;
+
+}
+
+.login-screen .login-container {
+  background-color: rgba(236, 225, 225, 0.288);
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 350px;
+  text-align: center;
+  box-sizing: border-box;
+
+}
+
+.login-screen input[type="text"],
+.login-screen input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border:none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.login-screen button {
+  width: 100%;
+  padding: 12px;
+  background-color: #234a64;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
