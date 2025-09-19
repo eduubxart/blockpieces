@@ -193,3 +193,33 @@
   border-radius: 10px;
   cursor: pointer;
 }
+.header {
+  display: flex; /*coloca os itens lado a lado*/
+  gap: 20px;
+  padding: 10px;
+  background: #111;
+  border-bottom: 2px solid #fff;
+
+}
+
+.avataredu {
+  width: 14px;
+  height: 64px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.avatarsuzi{
+  width: 15px;
+  height: 15px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.avatar:houver {
+  transform: scale(1.2); /*aqui vai dar o zoom em cima do avatar quando passar o mouse*/
+}
+
+

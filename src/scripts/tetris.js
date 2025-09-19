@@ -13,7 +13,7 @@ const nextCtx = nextCanvas.getContext("2d");
 const linha = 20;
 const col = 10;
 const sq = 30;
-const quad = "#0e0e0e";
+const quad = "black";
 
 let bord = [];
 for (let r = 0; r < linha; r++) {
@@ -28,6 +28,9 @@ function desenhaQuad(x, y, cor) {
     con.shadowBlur = 5;
     con.fillRect(x * sq, y * sq, sq, sq);
     con.shadowBlur = 0;
+
+     con.strokeStyle = "BLACK";
+    con.strokeRect(x*sq,y*sq,sq,sq);
 }
 
 function tab() {
