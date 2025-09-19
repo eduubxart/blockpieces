@@ -1,3 +1,4 @@
+
 // aqui vamos conectar as rotas
 import express from 'express';//importa o express que é o framework para criar o servidor
 import mongoose from 'mongoose';//importa o mongoose que é o framework para conectar com o banco de dados
@@ -15,4 +16,3 @@ mongoose.connect('mongodb+srv://fariabragaeduardo_db_user:senacprojeto09@cluster
 app.use('/api/users', userRoutes);//todas as rotas que começarem com /api/users vão ser direcionadas para o arquivo userRoutes.js
 
 app.listen(3000, () => console.log('Servidor rodando na porta 3000'));//aqui ele está configurando o servidor para rodar na porta 3000 e mostrar essa mensagem no console
-

@@ -1,3 +1,4 @@
+
 import User from '../models/user.js';//importa o modelo do usuário que foi criado no arquivo user.js
 //esse função vai receber os dados do frontend e salvar no banco de dados
 export const registerUser = async (req, res) => {// aqui é uma função assíncrona que vai receber a requisição e a resposta
@@ -19,3 +20,5 @@ export const registerUser = async (req, res) => {// aqui é uma função assínc
 
     }
 };//resumido bem, essa função recebe os dados do frontend, verifica se o usuário já existe no banco de dados, se não existir, cria um novo usuário e salva no banco de dados, e retorna uma resposta para o frontend.
+
+
