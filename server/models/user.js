@@ -11,3 +11,4 @@ const userShema = new mongoose.Schema({//cria o schema do usuário, shema é o m
 export default mongoose.model('User', userShema);//exporta o modelo do usuário para ser usado em outros arquivos
 //resumido bem, nesta pasta o que eu fiz foi definir como vai ser o modelo do usuário no banco de dados, quais campos ele vai ter e como eles vão ser, e exportei para poder usar em outros arquivos, como no controller e nas rotas.
 
+wpp

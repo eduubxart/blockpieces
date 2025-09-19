@@ -64,49 +64,45 @@
     box-shadow: 0 0 10px rgb(255, 255, 255);
     border-radius: 5%;
   }
-  #game-over-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 340px;
-    height: 640px;
-    margin-top: -320px; /* metade da altura */
-    margin-left: -160px; /* metade da largura */
-    background: rgba(0, 0, 0, 0.9);
-    border: 3px solid white;
-    border-radius: 10px;
-    box-shadow: 0 0 20px white;
-    color: rgb(116, 19, 19);
-    font-family: 'PixelGameFont', sans-serif;
-    font-size: 72px;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    visibility: hidden;  /* começa escondido */
-    z-index: 100;
-  }
-  
-  #game-over-screen button {
-    margin-top: 30px;
-    padding: 12px 30px;
-    font-family: 'PixelGameFont', sans-serif;
-    font-size: 24px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 0 10px red;
-    transition: background-color 0.3s ease;
-  }
-  
-  #game-over-screen button:hover {
-    background-color: darkred;
-    box-shadow: 0 0 20px darkred;
-  }
+#game-over-screen {
+  position: fixed;         /* cobre a tela inteira */
+  top: 0;
+  left: 0;
+  width: 100vw;            /* 100% da largura da tela */
+  height: 100vh;           /* 100% da altura da tela */
+  background: rgba(0, 0, 0, 0.95); /* tela escura */
+  color: red;
+  font-family: 'PixelGameFont', sans-serif;
+  font-size: 80px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;  /* botão embaixo do texto */
+  user-select: none;
+  visibility: hidden;      /* começa escondido */
+  z-index: 9999;           /* garante que fique na frente */
+}
+
+#game-over-screen button {
+  margin-top: 30px;
+  padding: 14px 32px;
+  font-family: 'PixelGameFont', sans-serif;
+  font-size: 28px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 15px red;
+  transition: background-color 0.3s ease;
+}
+
+#game-over-screen button:hover {
+  background-color: darkred;
+  box-shadow: 0 0 25px darkred;
+}
+
   #timer {
     font-family: 'PixelGameFont', sans-serif;
     font-size: 24px;
