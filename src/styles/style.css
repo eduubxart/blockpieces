@@ -1,12 +1,12 @@
 /* ====== Fonte e corpo ====== */
 @font-face {
-<<<<<<< HEAD
+
   font-family: 'PixelFont';
   src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
 }
 
 body {
-=======
+
     font-family: 'PixelFont';
     src: url('assets/font/PixelGameFont.ttf') format('truetype');
   }
@@ -147,7 +147,7 @@ body {
   }
   /* ======== LOGIN ======== */
 .login-screen {
->>>>>>> 6d510ae9d66fb65447d5bc8277e4334787031132
+
   font-family: 'PixelFont', sans-serif;
   background-color: black;
   color: white;
