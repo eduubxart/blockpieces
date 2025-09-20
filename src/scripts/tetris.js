@@ -65,6 +65,13 @@ let score = 0;
 let dropStart = Date.now();
 let gameOver = false;
 
+let lines = 0;
+let level = 1;
+let dropSpeed = 1000; // vai ser a velociade inicial
+
+const linesEl = document.getElementById('lines');
+const lineEL = document.getElementById('level');
+
 // Timer variables
 let tempo = 0;
 let timerInterval;
@@ -184,21 +191,30 @@ Piece.prototype.lock = function () {
             }
         }
         if (isLinhaFull) {
-            // Move all rows down
+            // limpa a linha
             for (let y = r; y > 0; y--) {
                 for (let c = 0; c < col; c++) {
                     bord[y][c] = bord[y - 1][c];
                 }
             }
-            // Clear top row
+            
             for (let c = 0; c < col; c++) {
                 bord[0][c] = quad;
             }
+            //atualiza o score, lines e level.
             score += 10;
+            lines += 1;
+            level = Math.floor(lines / 10) + 1;
+            dropSpeed = 1000 = (level - 1) * 100;
+            if (dropSpeed < 200) dropSpeed = 200;
+
+            //vai atualizar o html
+            scoreSist.innerHTMl = "Score: " + score;
+            linesEl.innerHTML = "Lines: " + lines;
+            levelEl.innerHTML = "Level: " + level;
         }
     }
-    tab();
-    scoreSist.innerHTML = "Score: " + score;
+
 }
 
 // === Preview da próxima peça ===
