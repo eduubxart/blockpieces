@@ -29,15 +29,17 @@ body {
 }
 
 /* ====== Game Over Screen ====== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 #game-over-screen {
+  font-family: 'Press Start 2P', cursive; /* usar só esta linha */
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background:linear-gradient(to right,rgb(141, 18, 18),rgb(39, 0, 34));
+  background: rgba(0, 0, 0, 0.95);
   color: rgb(212, 6, 6);
-  font-family: 'PixelGameFont', sans-serif;
   font-size: 80px;
   font-weight: bold;
   display: flex;
@@ -49,18 +51,16 @@ body {
   z-index: 9999;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 #game-over-screen button {
-  margin-top: 30px;
-  padding: 14px 32px;
-  font-family: 'PixelGameFont', sans-serif;
-  font-size: 28px;
-  background: red;
+  font-family: 'Press Start 2P', cursive; /* fonte pixelada */
+  font-size: 20px;
   color: white;
-  border: none;
-  border-radius: 6px;
+  background: none;   /* sem fundo */
+  border: none;       /* sem borda */
   cursor: pointer;
-  box-shadow: 0 0 15px red;
-  transition: background-color 0.3s ease;
+  text-shadow: 0 0 4px red; /* efeito glow opcional */
+  margin-top: 20px;
 }
 
 #game-over-screen button:hover {
