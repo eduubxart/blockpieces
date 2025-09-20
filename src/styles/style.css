@@ -1,87 +1,52 @@
-
-
+/* ====== Fonte e corpo ====== */
 @font-face {
-    font-family: 'PixelGameFont';
-    src: url('assets/font/PixelGameFont.ttf') format('truetype');
-  }
-  
-  body {
-    font-family: 'PixelGameFont', sans-serif;
-    background-color: black;
-    background-image:
-        radial-gradient(rgb(255, 255, 255) 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px);
-    background-size: 200px 200px;
-    background-position: 0 0, 2px 2px;
-    animation: moveStars 25s linear infinite;
-    color: white;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-  
-  @keyframes moveStars {
-    0% { background-position: 0 0, 25px 25px; }
-    25% { background-position: 0 50px, 25px 75px; }
-    35% { background-position: 0 100px, 25px 125px; }
-    65% { background-position: 0 150px, 25px 175px; }
-    100% { background-position: 0 200px, 25px 225px; }
-  }
-  
-  .title {
-    margin-top: 20px;
-  }
-  
-  h1 {
-    font-size: 50px;
-    animation: rainbow 5s infinite;
-  }
-  
-  @keyframes rainbow {
-    0% { color: rgb(255, 0, 0); }
-    20% { color: orange; }
-    40% { color: yellow; }
-    60% { color: green; }
-    80% { color: blue; }
-    100% { color: violet; }
-  }
-  
-  #score {
-    display: inline-block;
-    font-size: 20px;
-    margin: 20px 0;
-  }
-  
-  .back {
-    margin-top: 20px;
-  }
-  
-  canvas {
-    display: block;
-    margin: auto;
-    background-color: #0e0e0e;
-    border: 2px solid white;
-    box-shadow: 0 0 10px rgb(255, 255, 255);
-    border-radius: 5%;
-  }
+  font-family: 'PixelFont';
+  src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: 'PixelFont', sans-serif;
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* ====== Título ====== */
+.title h1 {
+  font-size: 50px;
+  margin-top: 20px;
+  animation: rainbow 5s infinite;
+}
+@keyframes rainbow {
+  0% { color: rgb(255, 0, 0); }
+  20% { color: orange; }
+  40% { color: yellow; }
+  60% { color: green; }
+  80% { color: blue; }
+  100% { color: violet; }
+}
+
+/* ====== Game Over Screen ====== */
 #game-over-screen {
-  position: fixed;         /* cobre a tela inteira */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;            /* 100% da largura da tela */
-  height: 100vh;           /* 100% da altura da tela */
-  background: rgba(0, 0, 0, 0.95); /* tela escura */
-  color: red;
+  width: 100vw;
+  height: 100vh;
+  background:linear-gradient(to right,rgb(141, 18, 18),rgb(39, 0, 34));
+  color: rgb(212, 6, 6);
   font-family: 'PixelGameFont', sans-serif;
   font-size: 80px;
   font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;  /* botão embaixo do texto */
+  flex-direction: column;
   user-select: none;
-  visibility: hidden;      /* começa escondido */
-  z-index: 9999;           /* garante que fique na frente */
+  visibility: hidden;
+  z-index: 9999;
 }
 
 #game-over-screen button {
@@ -103,119 +68,79 @@
   box-shadow: 0 0 25px darkred;
 }
 
-  #timer {
-    font-family: 'PixelGameFont', sans-serif;
-    font-size: 24px;
-    margin: 10px auto;
-    color: white;
-    text-shadow: 0 0 5px cyan;
-    width: fit-content;
-  }
-  .game-area {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  
-  #gameCanvas {
-    background: #111;
-    border: 2px solid #555;
-  }
-  
-  #sidebar {
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  
-  #nextPiece {
-    background: #222;
-    border: 2px solid #555;
-    margin-top: 10px;
-    
-  }
-  /* ======== LOGIN ======== */
-.login-screen {
-  font-family: 'PixelGameFont', sans-serif;
-  background-color: black;
-  background-image:
-      radial-gradient(rgb(255, 255, 255) 1px, transparent 1px),
-      radial-gradient(white 1px, transparent 1px);
-  background-size: 200px 200px;
-  background-position: 0 0, 2px 2px;
-  animation: moveStars 25s linear infinite;
-  color: white;
+/* ====== Container do jogo ====== */
+.game-container {
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  gap: 20px; /* Espaço entre grid e sidebar */
+  margin-top: 20px;
+}
+
+/* ====== Canvas do jogo ====== */
+.game-canvas canvas {
+  background: #111;
+  border: 2px solid #555;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  border-radius: 5%;
+  display: block;
+  margin: auto;
+}
+
+/* ====== Sidebar lateral ====== */
+.game-sidebar {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;  /* ocupa a tela inteira */
-  margin: 0;
-  padding: 0;
-  text-align: center;
-
-}
-
-.login-screen .login-container {
-  background-color: rgba(236, 225, 225, 0.288);
-  padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  width: 90%;
-  max-width: 350px;
-  text-align: center;
-  box-sizing: border-box;
-
-}
-
-.login-screen input[type="text"],
-.login-screen input[type="password"] {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 20px;
-  border:none;
-  box-sizing: border-box;
-  border-radius: 10px;
-  font-size: 16px;
-}
-
-.login-screen button {
-  width: 100%;
-  padding: 12px;
-  background-color: #234a64;
-  color: #fff;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.header {
-  display: flex; /*coloca os itens lado a lado*/
   gap: 20px;
-  padding: 10px;
+  color: white;
+}
+
+/* Info do jogo */
+.game-sidebar #score,
+.game-sidebar #timer,
+.game-sidebar #lines,
+.game-sidebar #level {
+  font-size: 22px;
+  padding: 8px 12px;
+  background: #222;
+  border: 2px solid #555;
+  border-radius: 6px;
+  width: 120px;
+  text-align: center;
+}
+
+/* Preview da próxima peça */
+.game-sidebar canvas {
+  background: #222;
+  border: 2px solid #555;
+  border-radius: 6px;
+}
+
+/* Tutorial de controles */
+.tutorial p {
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 10px;
+}
+
+/* ====== Header/Avatares ====== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
   background: #111;
   border-bottom: 2px solid #fff;
-
 }
 
-.avataredu {
-  width: 14px;
-  height: 64px;
+.avataredu, .avatarsuzi {
+  width: 50px;
+  height: 50px;
   image-rendering: pixelated;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.avatarsuzi{
-  width: 15px;
-  height: 15px;
-  image-rendering: pixelated;
-  cursor: pointer;
-  transition: 0.2s;
+.avataredu:hover, .avatarsuzi:hover {
+  transform: scale(1.2);
 }
-
-.avatar:houver {
-  transform: scale(1.2); /*aqui vai dar o zoom em cima do avatar quando passar o mouse*/
-}
-
-
