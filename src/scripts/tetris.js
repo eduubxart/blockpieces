@@ -12,65 +12,17 @@ const starsCanvas = document.getElementById("stars-bg");
 const starsCtx = starsCanvas.getContext("2d");
 const nextCanvas = document.getElementById("nextPiece");
 const nextCtx = nextCanvas.getContext("2d");
+const tutorialEl = document.getElementById("tutorial");
+
 starsCanvas.width = window.innerWidth;
 starsCanvas.height = window.innerHeight;
-
-// ==========================
-// Partículas de linha completa estilo Tetris clássico
-// ==========================
-let particles = [];
-
-function createParticles(x, y, color) {
-    for (let i = 0; i < 20; i++) { // mais partículas por célula
-        let angle = Math.random() * 2 * Math.PI; // direção aleatória
-        let speed = Math.random() * 10 + 4; // velocidade aleatória
-        particles.push({
-            x: x + sq/2,
-            y: y + sq/2,
-            dx: Math.cos(angle) * speed,
-            dy: Math.sin(angle) * speed,
-            alpha: 1,
-            color: color,
-            size: Math.random() * 6 + 4
-        });
-    }
-}
-
-function drawParticles() {
-    for (let i = particles.length - 1; i >= 0; i--) {
-        let p = particles[i];
-
-        // movimenta partículas
-        p.x += p.dx;
-        p.y += p.dy;
-
-        // desintegração gradual
-        p.alpha -= 0.03;
-        p.size *= 0.95;
-
-        // desenha partícula
-        con.fillStyle = p.color;
-        con.fillRect(p.x, p.y, p.size, p.size);
-
-        // remove quando sumir
-        if (p.alpha <= 0.05 || p.size < 0.5) {
-            particles.splice(i, 1);
-        }
-    }
-}
-
-// ==========================
-// Redimensiona canvas das estrelas
-// ==========================
-function resizeStarsCanvas() {
+window.addEventListener('resize', () => {
     starsCanvas.width = window.innerWidth;
     starsCanvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeStarsCanvas);
-resizeStarsCanvas();
+});
 
 // ==========================
-// Criação das estrelas
+// Estrelas de fundo
 // ==========================
 const layers = [
     { count: 80, speed: 0.1, maxR: 1 },
@@ -82,7 +34,7 @@ let stars = [];
 
 function createStars() {
     stars = [];
-    layers.forEach((layer) => {
+    layers.forEach(layer => {
         for (let i = 0; i < layer.count; i++) {
             stars.push({
                 x: Math.random() * starsCanvas.width,
@@ -99,13 +51,11 @@ createStars();
 
 function drawStars() {
     starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
-
     stars.forEach(star => {
         const gradient = starsCtx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.r);
         gradient.addColorStop(0, `rgba(255,255,255,${star.alpha})`);
         gradient.addColorStop(0.5, `rgba(255,255,255,${star.alpha * 0.5})`);
         gradient.addColorStop(1, 'rgba(255,255,255,0)');
-
         starsCtx.fillStyle = gradient;
         starsCtx.beginPath();
         starsCtx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
@@ -114,11 +64,9 @@ function drawStars() {
         star.alpha += (Math.random() - 0.5) * star.flicker;
         if (star.alpha < 0) star.alpha = 0;
         if (star.alpha > 1) star.alpha = 1;
-
         star.x -= star.speed;
         if (star.x < 0) star.x = starsCanvas.width;
     });
-
     requestAnimationFrame(drawStars);
 }
 drawStars();
@@ -148,15 +96,12 @@ const levelEl = document.getElementById('level');
 function resetBoard() {
     bord = [];
     for (let r = 0; r < linha; r++) {
-        bord[r] = [];
-        for (let c = 0; c < col; c++) {
-            bord[r][c] = quad;
-        }
+        bord[r] = Array(col).fill(quad);
     }
 }
 
 // ==========================
-// Funções do canvas
+// Canvas
 // ==========================
 function desenhaQuad(x, y, cor) {
     con.fillStyle = cor;
@@ -171,8 +116,6 @@ function tab() {
             desenhaQuad(c, r, bord[r][c]);
         }
     }
-
-    drawParticles(); // desenha partículas
 }
 
 // ==========================
@@ -197,36 +140,6 @@ let p = null;
 let nextP = null;
 
 // ==========================
-//tutorial
-// ==========================
-const tutorialEl = document.getElementById("tutorial");
-
-startBtn.addEventListener('click', () => {
-    if (gameStarted) return;
-    gameStarted = true;
-    startBtn.style.display = 'none';
-    
-    // mostra tutorial fixo
-    tutorialEl.style.display = 'block';
-
-    resetBoard();
-    score = 0;
-    lines = 0;
-    level = 1;
-    dropSpeed = 1000;
-    gameOver = false;
-
-    p = geraPecas();
-    nextP = geraPecas();
-    drawNextPiece(nextP);
-    p.draw();
-    tab();
-    updateScore();
-    iniciarTimer();
-    dropLoop();
-});
-
-// ==========================
 // Timer
 // ==========================
 function iniciarTimer() {
@@ -238,6 +151,9 @@ function iniciarTimer() {
     }, 1000);
 }
 
+// ==========================
+// Score
+// ==========================
 function updateScore() {
     scoreSist.innerHTML = "Score: " + score;
     linesEl.innerHTML = "Lines: " + lines;
@@ -259,9 +175,7 @@ function Piece(tetromino, cor) {
 Piece.prototype.fill = function(cor) {
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
-            if (this.ativarTetromino[r][c]) {
-                desenhaQuad(this.x + c, this.y + r, cor);
-            }
+            if (this.ativarTetromino[r][c]) desenhaQuad(this.x + c, this.y + r, cor);
         }
     }
 }
@@ -328,45 +242,52 @@ Piece.prototype.rotate = function() {
 }
 
 Piece.prototype.lock = function() {
+    // Coloca a peça no tabuleiro
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
             if (!this.ativarTetromino[r][c]) continue;
             if (this.y + r < 0) {
-                gameOver = true;
-                gameOverScreen.style.visibility = 'visible';
-                clearInterval(timerInterval);
+                gameOverHandler();
                 return;
             }
             bord[this.y + r][this.x + c] = this.cor;
         }
     }
 
-    // Checa linhas completas e cria partículas estilo Tetris clássico
-    for (let r = linha -1; r >= 0; r--) {
+    // Verifica linhas completas com animação
+    for (let r = linha - 1; r >= 0; r--) {
         if (bord[r].every(cell => cell != quad)) {
-            for (let c = 0; c < col; c++) {
-                createParticles(c * sq, r * sq, bord[r][c]);
-            }
-            // Remove a linha após pequeno delay para ver a explosão
-            setTimeout(() => {
-                bord.splice(r, 1);
-                bord.unshift(Array(col).fill(quad));
-            }, 50);
-            score += 10;
-            lines += 1;
+            let blinkCount = 0;
+            let blinkInterval = setInterval(() => {
+                for (let c = 0; c < col; c++) {
+                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : this.cor;
+                }
+                tab();
+                blinkCount++;
+                if (blinkCount > 5) { // 3 piscadas
+                    clearInterval(blinkInterval);
+                    bord.splice(r, 1);
+                    bord.unshift(Array(col).fill(quad));
+                    score += 10;
+                    lines += 1;
+                    updateScore();
+                    tab();
+                }
+            }, 100);
         }
     }
 
+    // Atualiza level e velocidade de queda
     level = Math.floor(score / 50) + 1;
-    dropSpeed = 1000 - (level - 1) * 100;
-    if (dropSpeed < 200) dropSpeed = 200;
+    dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
 
     updateScore();
     tab();
 }
 
+
 // ==========================
-// Preview da próxima peça
+// Próxima peça
 // ==========================
 function drawNextPiece(piece) {
     nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
@@ -401,19 +322,15 @@ function dropLoop() {
 }
 
 // ==========================
-// Start e restart
+// Start / Restart
 // ==========================
 startBtn.addEventListener('click', () => {
     if (gameStarted) return;
     gameStarted = true;
     startBtn.style.display = 'none';
+    tutorialEl.style.display = 'block';
     resetBoard();
-    score = 0;
-    lines = 0;
-    level = 1;
-    dropSpeed = 1000;
-    gameOver = false;
-
+    score = 0; lines = 0; level = 1; dropSpeed = 1000; gameOver = false;
     p = geraPecas();
     nextP = geraPecas();
     drawNextPiece(nextP);
@@ -428,13 +345,14 @@ restartBtn.addEventListener('click', () => {
     gameStarted = false;
     gameOverScreen.style.visibility = 'hidden';
     startBtn.style.display = 'block';
+    tutorialEl.style.display = 'none';
     clearInterval(timerInterval);
     resetBoard();
     tab();
 });
 
 // ==========================
-// Controles do teclado
+// Controles
 // ==========================
 document.addEventListener("keydown", function (event) {
     if (!gameStarted || gameOver) return;
@@ -444,17 +362,20 @@ document.addEventListener("keydown", function (event) {
     if(event.keyCode == 39) p.moveRight();
     if(event.keyCode == 40) p.moveDown();
 });
-function gameOverHandler() {
-  gameOver = true;
-  gameOverScreen.style.visibility = 'visible';
-  clearInterval(timerInterval);
 
-  // pega usuário logado
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  if (currentUser) {
-    let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-    ranking.push({ username: currentUser.username, score });
-    ranking.sort((a, b) => b.score - a.score);
-    localStorage.setItem("ranking", JSON.stringify(ranking));
-  }
+// ==========================
+// Game over
+// ==========================
+function gameOverHandler() {
+    gameOver = true;
+    gameOverScreen.style.visibility = 'visible';
+    clearInterval(timerInterval);
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser) {
+        let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+        ranking.push({ username: currentUser.username, score });
+        ranking.sort((a,b) => b.score - a.score);
+        localStorage.setItem("ranking", JSON.stringify(ranking));
+    }
 }
