@@ -7,7 +7,7 @@
   <title>blockpieces</title>
   <link rel="stylesheet" href="/src/styles/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
+  
 </head>
 
 <body>
@@ -38,26 +38,32 @@
       <canvas id="nextPiece" width="120" height="120"></canvas>
       <canvas id="stars-bg"></canvas>
       <button id="start-btn">start</button>
-      <div class="tutorial">
-        <p>← Move | → Move | ↑ Rotaciona | ↓ Cai rápido</p>
+
+        <div id="tutorial" class="tutorial">
+          <p>Use as setas ⬅️➡️⬆️⬇️ para mover e girar as peças.</p>
+          <p>Complete linhas para ganhar pontos e subir de nível!</p>
       </div>
     </div>
   </div>
 
   <!-- Avatares/GitHub -->
   <div class="header">
-    <div class="avatar-container left">
-      <p class="avatar-msg">Entre no nosso GitHub!</p>
-      <a href="https://github.com/eduubxart" target="_blank">
-        <img src="/assets/pixelart/eu (1).gif" alt="Edu" class="avataredu">
-      </a>
-    </div>
+<div class="header">
+  <div class="avatar-block">
+    <a href="https://github.com/eduubxart" target="_blank">
+      <img src="/assets/pixelart/eu (1).gif" class="avataredu">
+    </a>
+    <p class="avatar-text">Conheça no GitHub</p>
+  </div>
 
-    <div class="avatar-container right">
-      <p class="avatarmsg">Entre no nosso GitHub!</p>
-      <a href="https://github.com/Suzii19" target="_blank">
-        <img src="/assets/pixelart/theszi.gif" alt="suzi" class="avatarsuzi">
-      </a>
+  <div class="avatar-block">
+    <a href="https://github.com/Suzii19" target="_blank">
+      <img src="/assets/pixelart/theszi.gif" class="avatarsuzi">
+    </a>
+    <p class="avatar-text">Conheça no GitHub</p>
+  </div>
+</div>
+
     </div>
     
     <div id="game-over-screen">

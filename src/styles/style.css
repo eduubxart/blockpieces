@@ -4,7 +4,7 @@
 
 /* ===================== BODY ===================== */
 body {
-  font-family: 'Press Start 2P', cursive; /* fonte principal do site */
+  font-family: 'Press Start 2P', monospace, cursive; /* fonte principal do site */
   background-color: black; /* cor de fundo padrão */
 
   color: white; /* cor padrão do texto */
@@ -26,15 +26,6 @@ body {
   height: 100vh;
   z-index: -1; /* fica atrás de tudo */
   background: black;
-}
-
-/* ===================== ANIMAÇÃO DO FUNDO ===================== */
-@keyframes moveStars {
-  0% { background-position: 0 0, 25px 25px; } /* posição inicial */
-  25% { background-position: 0 50px, 25px 75px; } /* posição 25% da animação */
-  35% { background-position: 0 100px, 25px 125px; } /* posição 35% */
-  65% { background-position: 0 150px, 25px 175px; } /* posição 65% */
-  100% { background-position: 0 200px, 25px 225px; } /* final da animação */
 }
 
 /* ===================== TÍTULO ===================== */
@@ -111,11 +102,11 @@ body {
 }
 /* ===================== BOTÕES ===================== */
 #start-btn {
-  font-family: 'Press Start 2P', cursive;
+  font-family: 'Press Start 2P', monospace, cursive;
   font-size: 18px;
   color: rgb(255, 255, 255); /* cor neon */
   background-color: #000000;
-  border: 2px solid rgb(255, 255, 255);
+  border: 2px solid rgb(136, 136, 136);
   padding: 14px 28px;
   border-radius: 6px;
   cursor: pointer;
@@ -128,27 +119,39 @@ body {
 
 #start-btn:hover {
   background-color: #000;
-  border-color: rgb(255, 255, 255);
+  border-color: rgb(138, 138, 138);
   
   transform: scale(1.1);
 }
 
 #start-btn:active {
   transform: scale(0.95);
-  box-shadow: 0 0 10px #0ff inset;
+  box-shadow: 0 0 10px rgb(0, 0, 0) inset;
 }
 
 
 /* ===================== TUTORIAL ===================== */
-.tutorial p {
-  font-size: 14px; /* tamanho do texto do tutorial */
-  color: #ccc; /* cor do texto do tutorial */
-  margin-top: 10px; /* espaço acima do texto */
+.tutorial {
+    position: absolute;        /* relativo ao header */
+    top: 460px;                 /* distancia abaixo do score-area */
+    left: -50%;
+    transform: translateX(38%);
+    background: rgba(0, 0, 0, 0.7);
+    color:#555(100% 0.01 -0.01);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 19px 19px;
+    border: 2px solid #555;
+    border-radius: 6px;
+    text-align: center;
+    display: none;             /* inicialmente escondido */
+    z-index: 10;
 }
+
 
 /* ===================== GAME OVER ===================== */
 #game-over-screen {
-  font-family: 'Press Start 2P', cursive; /* fonte pixelada */
+  font-family: 'Press Start 2P',monospace, cursive; /* fonte pixelada */
   position: fixed; /* fixa na tela inteira */
   top: 0; /* topo da tela */
   left: 0; /* esquerda da tela */
@@ -168,7 +171,7 @@ body {
 }
 
 #game-over-screen button {
-  font-family: 'Press Start 2P', cursive; /* fonte pixelada */
+  font-family: 'Press Start 2P', monospace, cursive;  /* fonte pixelada */
   font-size: 20px; /* tamanho do texto do botão */
   color: white; /* cor do texto */
   background: none; /* sem fundo */
@@ -185,22 +188,58 @@ body {
 
 /* ===================== HEADER / AVATARES ===================== */
 .header {
-  display: flex; /* flexbox horizontal */
-  justify-content: space-between; /* divide espaço entre esquerda e direita */
-  padding: 10px 20px; /* espaçamento interno */
-  background: #111; /* cor de fundo do header */
-  border-bottom: 2px solid #fff; /* borda inferior */
-  margin-top: 60PX;
+  display: flex;
+  justify-content: center; /* centraliza os avatares */
+  gap: 40px;              /* espaço entre eles */
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.avatar-block {
+  display: flex;
+  flex-direction: column; /* avatar em cima, texto embaixo */
+  align-items: center;
+  gap: 6px;               /* espaço entre avatar e texto */
 }
 
 .avataredu, .avatarsuzi {
-  width: 50px; /* largura do avatar */
-  height: 50px; /* altura do avatar */
-  image-rendering: pixelated; /* deixa pixel art nítida */
-  cursor: pointer; /* cursor de mão */
-  transition: 0.2s; /* animação suave */
+  width: 80px;
+  height: 80px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.avataredu {
+  width: 100px;
+  height: 100px;
 }
 
 .avataredu:hover, .avatarsuzi:hover {
-  transform: scale(1.2); /* aumenta o avatar ao passar o mouse */
+  transform: scale(1.2); /* efeito hover simples */
 }
+
+.avatar-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: white;
+  text-align: center;
+}
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: white;
+}
+
+.ranking-table th, .ranking-table td {
+  border: 2px solid white;
+  padding: 8px;
+  text-align: center;
+}
+
+.ranking-table th {
+  background: rgba(255, 255, 255, 0.1);
+}
+

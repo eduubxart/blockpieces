@@ -1,22 +1,27 @@
-<!--login/registro-->
-<!DOCTYPE html><!--pagina do jogo-->
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="en">  
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blockpieces</title>
-    <link rel="stylesheet" href="/src/styles/style.css">
-    <script src="../scripts/login.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>blockpieces - Login</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
 </head>
 <body>
-  <div class="login-screen">
-    <div class="login-container">
-        <h1>Login</h1>
-        <input type="text" placeholder="Usuário">
-        <input type="password" placeholder="Senha">
-        <button>Entrar</button>
-</div>
-</div>
+  <div class="title">
+    <h1>blockpieces</h1>
+  </div>
 
-</body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Nome de usuário" required>
+      <input type="password" id="password" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="login-message"></p>
+    <button onclick="location.href='index.html'">Voltar ao Início</button>
+  </div>
+
+  <script src="../scripts/login.js"></script>
+</html>
