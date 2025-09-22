@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>blockpieces</title>
   <link rel="stylesheet" href="/src/styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -28,13 +30,14 @@
     <!-- Sidebar lateral -->
     <div class="game-sidebar">
       <div id="score">Score: 0</div>
-      <div id="timer">Tempo: 0s</div>
+      <div id="timer">timer: 120s</div>
       <div id="lines">Lines: 0</div>
       <div id="level">Level: 0</div>
 
       <h3>Próxima peça:</h3>
       <canvas id="nextPiece" width="120" height="120"></canvas>
-
+      <canvas id="stars-bg"></canvas>
+      <button id="start-btn">start</button>
       <div class="tutorial">
         <p>← Move | → Move | ↑ Rotaciona | ↓ Cai rápido</p>
       </div>
@@ -56,7 +59,17 @@
         <img src="/assets/pixelart/theszi.gif" alt="suzi" class="avatarsuzi">
       </a>
     </div>
+    
+    <div id="game-over-screen">
+        GAME OVER
+        <button id="restart-btn">Reiniciar</button>
+      </div>
+
+    <div class="back">
+        <canvas id="gameCanvas" width="300" height="600"></canvas>
+    </div>
   </div>
+ 
 
   <script src="/src/scripts/matrizes.js"></script>
   <script src="/src/scripts/tetris.js"></script>

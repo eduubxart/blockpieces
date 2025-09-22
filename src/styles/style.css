@@ -1,289 +1,206 @@
-/* ====== Fonte e corpo ====== */
-@font-face {
-
-  font-family: 'PixelFont';
-  src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
-}
-
-body {
-
-    font-family: 'PixelFont';
-    src: url('assets/font/PixelGameFont.ttf') format('truetype');
-  }
-  
-  body {
-    font-family: 'PixelFont', sans-serif;
-    background-color: black;
-    background-image:
-        radial-gradient(rgb(255, 255, 255) 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px);
-    background-size: 200px 200px;
-    background-position: 0 0, 2px 2px;
-    animation: moveStars 25s linear infinite;
-    color: white;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-  
-  @keyframes moveStars {
-    0% { background-position: 0 0, 25px 25px; }
-    25% { background-position: 0 50px, 25px 75px; }
-    35% { background-position: 0 100px, 25px 125px; }
-    65% { background-position: 0 150px, 25px 175px; }
-    100% { background-position: 0 200px, 25px 225px; }
-  }
-  
-  .title {
-    margin-top: 20px;
-  }
-  
-  h1 {
-    font-size: 50px;
-    animation: rainbow 5s infinite;
-  }
-  
-  @keyframes rainbow {
-    0% { color: rgb(255, 0, 0); }
-    20% { color: orange; }
-    40% { color: yellow; }
-    60% { color: green; }
-    80% { color: blue; }
-    100% { color: violet; }
-  }
-  
-  #score {
-    display: inline-block;
-    font-size: 20px;
-    margin: 20px 0;
-  }
-  
-  .back {
-    margin-top: 20px;
-  }
-  
-  canvas {
-    display: block;
-    margin: auto;
-    background-color: #0e0e0e;
-    border: 2px solid white;
-    box-shadow: 0 0 10px rgb(255, 255, 255);
-    border-radius: 5%;
-  }
-  #game-over-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 340px;
-    height: 640px;
-    margin-top: -320px; /* metade da altura */
-    margin-left: -160px; /* metade da largura */
-    background: rgba(0, 0, 0, 0.9);
-    border: 3px solid white;
-    border-radius: 10px;
-    box-shadow: 0 0 20px white;
-    color: rgb(116, 19, 19);
-    font-family: 'PixelFont', sans-serif;
-    font-size: 72px;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    visibility: hidden;  /* começa escondido */
-    z-index: 100;
-  }
-  
-  #game-over-screen button {
-    margin-top: 30px;
-    padding: 12px 30px;
-    font-family: 'PixelFont', sans-serif;
-    font-size: 24px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 0 10px red;
-    transition: background-color 0.3s ease;
-  }
-  
-  #game-over-screen button:hover {
-    background-color: darkred;
-    box-shadow: 0 0 20px darkred;
-  }
-  #timer {
-    font-family: 'PixelFont', sans-serif;
-    font-size: 24px;
-    margin: 10px auto;
-    color: white;
-    text-shadow: 0 0 5px cyan;
-    width: fit-content;
-  }
-  .game-area {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  
-  #gameCanvas {
-    background: #111;
-    border: 2px solid #555;
-  }
-  
-  #sidebar {
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  
-  #nextPiece {
-    background: #222;
-    border: 2px solid #555;
-    margin-top: 10px;
-    
-  }
-  /* ======== LOGIN ======== */
-.login-screen {
-
-  font-family: 'PixelFont', sans-serif;
-  background-color: black;
-  color: white;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-
-/* ====== Título ====== */
-.title h1 {
-  font-size: 50px;
-  margin-top: 20px;
-  animation: rainbow 5s infinite;
-}
-@keyframes rainbow {
-  0% { color: rgb(255, 0, 0); }
-  20% { color: orange; }
-  40% { color: yellow; }
-  60% { color: green; }
-  80% { color: blue; }
-  100% { color: violet; }
-}
-
-/* ====== Game Over Screen ====== */
+/* ===================== FONTE ===================== */
+/* Importa a fonte pixelada do Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-#game-over-screen {
-  font-family: 'Press Start 2P', cursive; /* usar só esta linha */
+/* ===================== BODY ===================== */
+body {
+  font-family: 'Press Start 2P', cursive; /* fonte principal do site */
+  background-color: black; /* cor de fundo padrão */
+
+  color: white; /* cor padrão do texto */
+  text-align: center; /* centraliza textos */
+  margin: 0; /* remove margem padrão do navegador */
+  padding: 0; /* remove padding padrão do navegador */
+
+  display: flex; /* ativa flexbox */
+  flex-direction: column; /* organiza elementos verticalmente */
+  justify-content: flex-start; /* elementos começam do topo */
+  align-items: center; /* centraliza horizontalmente */
+  min-height: 100vh; /* garante que ocupe a altura total da tela */
+}
+#stars-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95);
-  color: rgb(212, 6, 6);
-  font-size: 80px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  user-select: none;
-  visibility: hidden;
-  z-index: 9999;
+  z-index: -1; /* fica atrás de tudo */
+  background: black;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-#game-over-screen button {
-  font-family: 'Press Start 2P', cursive; /* fonte pixelada */
-  font-size: 20px;
-  color: white;
-  background: none;   /* sem fundo */
-  border: none;       /* sem borda */
-  cursor: pointer;
-  text-shadow: 0 0 4px red; /* efeito glow opcional */
-  margin-top: 20px;
+/* ===================== ANIMAÇÃO DO FUNDO ===================== */
+@keyframes moveStars {
+  0% { background-position: 0 0, 25px 25px; } /* posição inicial */
+  25% { background-position: 0 50px, 25px 75px; } /* posição 25% da animação */
+  35% { background-position: 0 100px, 25px 125px; } /* posição 35% */
+  65% { background-position: 0 150px, 25px 175px; } /* posição 65% */
+  100% { background-position: 0 200px, 25px 225px; } /* final da animação */
 }
 
-#game-over-screen button:hover {
-  background-color: darkred;
-  box-shadow: 0 0 25px darkred;
+/* ===================== TÍTULO ===================== */
+.title {
+  margin-top: 20px; /* espaço acima do título */
+  margin-bottom: 20px; /* espaço abaixo do título */
 }
 
-/* ====== Container do jogo ====== */
+.title h1 {
+  font-size: 40px; /* tamanho da fonte do título */
+  animation: rainbow 5s infinite; /* animação de cores no título */
+}
+
+@keyframes rainbow {
+  0% { color: rgb(255, 0, 0); } /* vermelho */
+  20% { color: orange; } /* laranja */
+  40% { color: yellow; } /* amarelo */
+  60% { color: green; } /* verde */
+  80% { color: blue; } /* azul */
+  100% { color: violet; } /* violeta */
+}
+
+/* ===================== CONTAINER DO JOGO ===================== */
 .game-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px; /* Espaço entre grid e sidebar */
-  margin-top: 20px;
+  display: flex; /* ativa flexbox pra alinhar grid + sidebar */
+  justify-content: center; /* centraliza horizontalmente */
+  align-items: flex-start; /* alinha pelo topo */
+  gap: 10px; /* espaço entre o canvas e a sidebar */
 }
 
-/* ====== Canvas do jogo ====== */
+/* ===================== CANVAS / TABULEIRO ===================== */
 .game-canvas canvas {
-  background: #111;
-  border: 2px solid #555;
-  box-shadow: 0 0 10px rgb(255, 255, 255);
-  border-radius: 5%;
-  display: block;
-  margin: auto;
+  background: #000000; /* fundo do tabuleiro */
+  border: 2px solid #000000; /* borda do canvas */
+  box-shadow: 0 0 10px rgb(255, 255, 255); /* brilho ao redor */
+  border-radius: 5%; /* cantos arredondados */
+  display: block; /* faz o canvas se comportar como bloco */
+  margin: auto; /* centraliza dentro da div */
 }
 
-/* ====== Sidebar lateral ====== */
+/* ===================== SIDEBAR ===================== */
 .game-sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  color: white;
-}
+  display: flex;              /* flex vertical */
+  flex-direction: column;     /* organiza elementos em coluna */
+  align-items: center;        /* centraliza horizontalmente */
+  gap: 20px;                  /* espaço entre elementos */
+  color: white;               /* cor do texto */
+  width: 150px;               /* largura fixa */
+  position: relative;         /* mantém no fluxo normal da página */
+  margin-left: 10px;          /* se quiser um espacinho do tabuleiro */
+} 
 
-/* Info do jogo */
+
+/* ===================== SCORE / TIMER / LINES / LEVEL ===================== */
 .game-sidebar #score,
 .game-sidebar #timer,
 .game-sidebar #lines,
 .game-sidebar #level {
-  font-size: 22px;
-  padding: 8px 12px;
-  background: #222;
-  border: 2px solid #555;
-  border-radius: 6px;
-  width: 120px;
-  text-align: center;
+  font-size: 15px;/* tamanho do texto */
+  padding: 8px 12px;/* espaçamento interno */
+  background: #000000;/* fundo preto */
+  border: 2px solid #555;/* borda cinza */
+  border-radius: 6px;/* cantos arredondados */
+  width: 120px;/* largura fixa */
+  text-align: center;/* centraliza o texto */
 }
 
-/* Preview da próxima peça */
+
+/* ===================== PRÓXIMA PEÇA ===================== */
 .game-sidebar canvas {
-  background: #222;
-  border: 2px solid #555;
+  background: #000000; /* fundo do preview */
+  border: 2px solid #555; /* borda do preview */
+  border-radius: 6px; /* cantos arredondados */
+}
+/* ===================== BOTÕES ===================== */
+#start-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 18px;
+  color: rgb(255, 255, 255); /* cor neon */
+  background-color: #000000;
+  border: 2px solid rgb(255, 255, 255);
+  padding: 14px 28px;
   border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  
+  margin-bottom: 20px;
+  display: inline-block;
 }
 
-/* Tutorial de controles */
+#start-btn:hover {
+  background-color: #000;
+  border-color: rgb(255, 255, 255);
+  
+  transform: scale(1.1);
+}
+
+#start-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 10px #0ff inset;
+}
+
+
+/* ===================== TUTORIAL ===================== */
 .tutorial p {
-  font-size: 14px;
-  color: #ccc;
-  margin-top: 10px;
+  font-size: 14px; /* tamanho do texto do tutorial */
+  color: #ccc; /* cor do texto do tutorial */
+  margin-top: 10px; /* espaço acima do texto */
 }
 
-/* ====== Header/Avatares ====== */
+/* ===================== GAME OVER ===================== */
+#game-over-screen {
+  font-family: 'Press Start 2P', cursive; /* fonte pixelada */
+  position: fixed; /* fixa na tela inteira */
+  top: 0; /* topo da tela */
+  left: 0; /* esquerda da tela */
+  width: 100vw; /* largura total da tela */
+  height: 100vh; /* altura total da tela */
+  background: rgba(0, 0, 0, 0.95); /* fundo semi-transparente */
+  color: rgb(212, 6, 6); /* cor do texto */
+  font-size: 80px; /* tamanho do texto */
+  font-weight: bold; /* negrito */
+  display: flex; /* flexbox para centralizar conteúdo */
+  justify-content: center; /* centraliza horizontalmente */
+  align-items: center; /* centraliza verticalmente */
+  flex-direction: column; /* organiza título e botão em coluna */
+  user-select: none; /* impede seleção de texto */
+  visibility: hidden; /* começa escondido */
+  z-index: 9999; /* fica por cima de tudo */
+}
+
+#game-over-screen button {
+  font-family: 'Press Start 2P', cursive; /* fonte pixelada */
+  font-size: 20px; /* tamanho do texto do botão */
+  color: white; /* cor do texto */
+  background: none; /* sem fundo */
+  border: none; /* sem borda */
+  cursor: pointer; /* cursor de mão */
+  text-shadow: 0 0 4px red; /* efeito glow */
+  margin-top: 20px; /* espaço acima do botão */
+}
+
+#game-over-screen button:hover {
+  background-color: darkred; /* fundo quando passa o mouse */
+  box-shadow: 0 0 25px darkred; /* brilho quando passa o mouse */
+}
+
+/* ===================== HEADER / AVATARES ===================== */
 .header {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background: #111;
-  border-bottom: 2px solid #fff;
+  display: flex; /* flexbox horizontal */
+  justify-content: space-between; /* divide espaço entre esquerda e direita */
+  padding: 10px 20px; /* espaçamento interno */
+  background: #111; /* cor de fundo do header */
+  border-bottom: 2px solid #fff; /* borda inferior */
+  margin-top: 60PX;
 }
 
 .avataredu, .avatarsuzi {
-  width: 50px;
-  height: 50px;
-  image-rendering: pixelated;
-  cursor: pointer;
-  transition: 0.2s;
+  width: 50px; /* largura do avatar */
+  height: 50px; /* altura do avatar */
+  image-rendering: pixelated; /* deixa pixel art nítida */
+  cursor: pointer; /* cursor de mão */
+  transition: 0.2s; /* animação suave */
 }
 
 .avataredu:hover, .avatarsuzi:hover {
-  transform: scale(1.2);
+  transform: scale(1.2); /* aumenta o avatar ao passar o mouse */
 }
