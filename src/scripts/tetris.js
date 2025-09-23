@@ -1,5 +1,5 @@
 // ==========================
-// Variáveis globais
+// Referências HTML/Canvas
 // ==========================
 const cvs = document.getElementById("gameCanvas");
 const con = cvs.getContext("2d");
@@ -13,6 +13,8 @@ const starsCtx = starsCanvas.getContext("2d");
 const nextCanvas = document.getElementById("nextPiece");
 const nextCtx = nextCanvas.getContext("2d");
 const tutorialEl = document.getElementById("tutorial");
+const linesEl = document.getElementById('lines');
+const levelEl = document.getElementById('level');
 
 starsCanvas.width = window.innerWidth;
 starsCanvas.height = window.innerHeight;
@@ -90,9 +92,6 @@ let gameStarted = false;
 let timer = 0;
 let timerInterval;
 
-const linesEl = document.getElementById('lines');
-const levelEl = document.getElementById('level');
-
 function resetBoard() {
     bord = [];
     for (let r = 0; r < linha; r++) {
@@ -100,9 +99,6 @@ function resetBoard() {
     }
 }
 
-// ==========================
-// Canvas
-// ==========================
 function desenhaQuad(x, y, cor) {
     con.fillStyle = cor;
     con.fillRect(x * sq, y * sq, sq, sq);
@@ -242,7 +238,6 @@ Piece.prototype.rotate = function() {
 }
 
 Piece.prototype.lock = function() {
-    // Coloca a peça no tabuleiro
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
             if (!this.ativarTetromino[r][c]) continue;
@@ -254,7 +249,6 @@ Piece.prototype.lock = function() {
         }
     }
 
-    // Verifica linhas completas com animação
     for (let r = linha - 1; r >= 0; r--) {
         if (bord[r].every(cell => cell != quad)) {
             let blinkCount = 0;
@@ -264,7 +258,7 @@ Piece.prototype.lock = function() {
                 }
                 tab();
                 blinkCount++;
-                if (blinkCount > 5) { // 3 piscadas
+                if (blinkCount > 5) {
                     clearInterval(blinkInterval);
                     bord.splice(r, 1);
                     bord.unshift(Array(col).fill(quad));
@@ -277,14 +271,12 @@ Piece.prototype.lock = function() {
         }
     }
 
-    // Atualiza level e velocidade de queda
     level = Math.floor(score / 50) + 1;
     dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
 
     updateScore();
     tab();
 }
-
 
 // ==========================
 // Próxima peça
@@ -325,6 +317,17 @@ function dropLoop() {
 // Start / Restart
 // ==========================
 startBtn.addEventListener('click', () => {
+    startGame();
+});
+
+restartBtn.addEventListener('click', () => {
+    restartGame();
+});
+
+// ==========================
+// Funções Start e Restart
+// ==========================
+function startGame() {
     if (gameStarted) return;
     gameStarted = true;
     startBtn.style.display = 'none';
@@ -339,9 +342,9 @@ startBtn.addEventListener('click', () => {
     updateScore();
     iniciarTimer();
     dropLoop();
-});
+}
 
-restartBtn.addEventListener('click', () => {
+function restartGame() {
     gameStarted = false;
     gameOverScreen.style.visibility = 'hidden';
     startBtn.style.display = 'block';
@@ -349,18 +352,32 @@ restartBtn.addEventListener('click', () => {
     clearInterval(timerInterval);
     resetBoard();
     tab();
-});
+    score = 0;
+    lines = 0;
+    level = 1;
+    dropSpeed = 1000;
+    gameOver = false;
+    p = geraPecas();
+    nextP = geraPecas();
+    drawNextPiece(nextP);
+    p.draw();
+    updateScore();
+}
 
 // ==========================
-// Controles
+// Controles + Enter para reiniciar
 // ==========================
 document.addEventListener("keydown", function (event) {
-    if (!gameStarted || gameOver) return;
+    if(!gameStarted && event.keyCode !== 13) return;
+
     if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
+
     if(event.keyCode == 37) p.moveLeft();
     if(event.keyCode == 38) p.rotate();
     if(event.keyCode == 39) p.moveRight();
     if(event.keyCode == 40) p.moveDown();
+
+    if(event.keyCode == 13) restartGame();
 });
 
 // ==========================
@@ -379,3 +396,25 @@ function gameOverHandler() {
         localStorage.setItem("ranking", JSON.stringify(ranking));
     }
 }
+document.addEventListener("keydown", function (event) {
+    if(event.keyCode == 13) { // Enter
+        if(!gameStarted) {
+            startGame();  // Inicia o jogo se ainda não começou
+        } else if(gameOver) {
+            restartGame(); // Reinicia se o jogo acabou
+        }
+    }
+
+    // Bloqueia scroll das setas
+    if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
+
+    // Controles do jogo (só se estiver rodando)
+    if(gameStarted && !gameOver) {
+        if(event.keyCode == 37) p.moveLeft();
+        if(event.keyCode == 38) p.rotate();
+        if(event.keyCode == 39) p.moveRight();
+        if(event.keyCode == 40) p.moveDown();
+    }
+});
+
+
