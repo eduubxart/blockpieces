@@ -237,7 +237,11 @@ Piece.prototype.rotate = function() {
     }
 }
 
+// ==========================
+// Função lock (corrigida)
+// ==========================
 Piece.prototype.lock = function() {
+    // Gruda a peça no tabuleiro
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
             if (!this.ativarTetromino[r][c]) continue;
@@ -249,31 +253,35 @@ Piece.prototype.lock = function() {
         }
     }
 
-    for (let r = linha - 1; r >= 0; r--) {
-        if (bord[r].every(cell => cell != quad)) {
-            let blinkCount = 0;
-            let blinkInterval = setInterval(() => {
-                for (let c = 0; c < col; c++) {
-                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : this.cor;
-                }
-                tab();
-                blinkCount++;
-                if (blinkCount > 5) {
-                    clearInterval(blinkInterval);
-                    bord.splice(r, 1);
-                    bord.unshift(Array(col).fill(quad));
-                    score += 10;
-                    lines += 1;
-                    updateScore();
-                    tab();
-                }
-            }, 100);
+    // Detecta todas as linhas completas
+    let linhasParaRemover = [];
+    for (let r = 0; r < linha; r++) {
+        if (bord[r].every(cell => cell !== quad)) {
+            linhasParaRemover.push(r);
         }
     }
 
+    // Se houver linhas completas, remove todas
+    if (linhasParaRemover.length > 0) {
+        linhasParaRemover.forEach(r => {
+            bord.splice(r, 1);
+            bord.unshift(Array(col).fill(quad));
+        });
+
+        // Pontuação proporcional
+        score += 10 * linhasParaRemover.length;
+        lines += linhasParaRemover.length;
+
+        level = Math.floor(score / 50) + 1;
+        dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
+
+        updateScore();
+        tab();
+    }
+
+    // Atualizações finais
     level = Math.floor(score / 50) + 1;
     dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
-
     updateScore();
     tab();
 }
@@ -360,18 +368,18 @@ function restartGame() {
 // Controles + Enter para start/restart
 // ==========================
 document.addEventListener("keydown", function (event) {
-    if(event.keyCode == 13) { // Enter
-        if(!gameStarted && !gameOver) startGame();
-        else if(gameOver) restartGame();
+    if (event.keyCode == 13) { // Enter
+        if (!gameStarted && !gameOver) startGame();
+        else if (gameOver) restartGame();
     }
 
-    if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
+    if ([37, 38, 39, 40].includes(event.keyCode)) event.preventDefault();
 
-    if(gameStarted && !gameOver) {
-        if(event.keyCode == 37) p.moveLeft();
-        if(event.keyCode == 38) p.rotate();
-        if(event.keyCode == 39) p.moveRight();
-        if(event.keyCode == 40) p.moveDown();
+    if (gameStarted && !gameOver) {
+        if (event.keyCode == 37) p.moveLeft();
+        if (event.keyCode == 38) p.rotate();
+        if (event.keyCode == 39) p.moveRight();
+        if (event.keyCode == 40) p.moveDown();
     }
 });
 
@@ -387,8 +395,9 @@ function gameOverHandler() {
     if (currentUser) {
         let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
         ranking.push({ username: currentUser.username, score });
-        ranking.sort((a,b) => b.score - a.score);
+        ranking.sort((a, b) => b.score - a.score);
         localStorage.setItem("ranking", JSON.stringify(ranking));
     }
 }
+
 
