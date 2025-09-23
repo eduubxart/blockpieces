@@ -316,24 +316,17 @@ function dropLoop() {
 // ==========================
 // Start / Restart
 // ==========================
-startBtn.addEventListener('click', () => {
-    startGame();
-});
+startBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', restartGame);
 
-restartBtn.addEventListener('click', () => {
-    restartGame();
-});
-
-// ==========================
-// Funções Start e Restart
-// ==========================
 function startGame() {
     if (gameStarted) return;
     gameStarted = true;
+    gameOver = false;
     startBtn.style.display = 'none';
     tutorialEl.style.display = 'block';
     resetBoard();
-    score = 0; lines = 0; level = 1; dropSpeed = 1000; gameOver = false;
+    score = 0; lines = 0; level = 1; dropSpeed = 1000;
     p = geraPecas();
     nextP = geraPecas();
     drawNextPiece(nextP);
@@ -345,39 +338,41 @@ function startGame() {
 }
 
 function restartGame() {
-    gameStarted = false;
+    gameStarted = true;
+    gameOver = false;
     gameOverScreen.style.visibility = 'hidden';
-    startBtn.style.display = 'block';
-    tutorialEl.style.display = 'none';
+    startBtn.style.display = 'none';
+    tutorialEl.style.display = 'block';
     clearInterval(timerInterval);
     resetBoard();
-    tab();
-    score = 0;
-    lines = 0;
-    level = 1;
-    dropSpeed = 1000;
-    gameOver = false;
+    score = 0; lines = 0; level = 1; dropSpeed = 1000;
     p = geraPecas();
     nextP = geraPecas();
     drawNextPiece(nextP);
     p.draw();
+    tab();
     updateScore();
+    iniciarTimer();
+    dropLoop();
 }
 
 // ==========================
-// Controles + Enter para reiniciar
+// Controles + Enter para start/restart
 // ==========================
 document.addEventListener("keydown", function (event) {
-    if(!gameStarted && event.keyCode !== 13) return;
+    if(event.keyCode == 13) { // Enter
+        if(!gameStarted && !gameOver) startGame();
+        else if(gameOver) restartGame();
+    }
 
     if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
 
-    if(event.keyCode == 37) p.moveLeft();
-    if(event.keyCode == 38) p.rotate();
-    if(event.keyCode == 39) p.moveRight();
-    if(event.keyCode == 40) p.moveDown();
-
-    if(event.keyCode == 13) restartGame();
+    if(gameStarted && !gameOver) {
+        if(event.keyCode == 37) p.moveLeft();
+        if(event.keyCode == 38) p.rotate();
+        if(event.keyCode == 39) p.moveRight();
+        if(event.keyCode == 40) p.moveDown();
+    }
 });
 
 // ==========================
@@ -396,25 +391,4 @@ function gameOverHandler() {
         localStorage.setItem("ranking", JSON.stringify(ranking));
     }
 }
-document.addEventListener("keydown", function (event) {
-    if(event.keyCode == 13) { // Enter
-        if(!gameStarted) {
-            startGame();  // Inicia o jogo se ainda não começou
-        } else if(gameOver) {
-            restartGame(); // Reinicia se o jogo acabou
-        }
-    }
-
-    // Bloqueia scroll das setas
-    if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
-
-    // Controles do jogo (só se estiver rodando)
-    if(gameStarted && !gameOver) {
-        if(event.keyCode == 37) p.moveLeft();
-        if(event.keyCode == 38) p.rotate();
-        if(event.keyCode == 39) p.moveRight();
-        if(event.keyCode == 40) p.moveDown();
-    }
-});
-
 
