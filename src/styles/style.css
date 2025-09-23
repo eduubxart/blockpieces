@@ -51,9 +51,10 @@ body {
 /* ===================== CONTAINER DO JOGO ===================== */
 .game-container {
   display: flex; /* ativa flexbox pra alinhar grid + sidebar */
+  margin-top: 60px; /* não deixa ficar no topo da pag*/
   justify-content: center; /* centraliza horizontalmente */
   align-items: flex-start; /* alinha pelo topo */
-  gap: 10px; /* espaço entre o canvas e a sidebar */
+  gap: 20px; /* espaço entre o canvas e a sidebar */
 }
 
 /* ===================== CANVAS / TABULEIRO ===================== */
@@ -61,7 +62,7 @@ body {
   background: #000000; /* fundo do tabuleiro */
   border: 2px solid #000000; /* borda do canvas */
   box-shadow: 0 0 10px rgb(255, 255, 255); /* brilho ao redor */
-  border-radius: 5%; /* cantos arredondados */
+  border-radius: 2%; /* cantos arredondados */
   display: block; /* faz o canvas se comportar como bloco */
   margin: auto; /* centraliza dentro da div */
 }
