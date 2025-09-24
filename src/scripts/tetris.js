@@ -238,10 +238,9 @@ Piece.prototype.rotate = function() {
 }
 
 // ==========================
-// Função lock (corrigida)
+// Novo lock() corrigido
 // ==========================
 Piece.prototype.lock = function() {
-    // Gruda a peça no tabuleiro
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
             if (!this.ativarTetromino[r][c]) continue;
@@ -253,37 +252,46 @@ Piece.prototype.lock = function() {
         }
     }
 
-    // Detecta todas as linhas completas
-    let linhasParaRemover = [];
-    for (let r = 0; r < linha; r++) {
-        if (bord[r].every(cell => cell !== quad)) {
-            linhasParaRemover.push(r);
+    // Procurar linhas completas
+    let linhasCompletas = [];
+    for (let r = linha - 1; r >= 0; r--) {
+        if (bord[r].every(cell => cell != quad)) {
+            linhasCompletas.push(r);
         }
     }
 
-    // Se houver linhas completas, remove todas
-    if (linhasParaRemover.length > 0) {
-        linhasParaRemover.forEach(r => {
-            bord.splice(r, 1);
-            bord.unshift(Array(col).fill(quad));
-        });
+    if (linhasCompletas.length > 0) {
+        let blinkCount = 0;
+        let blinkInterval = setInterval(() => {
+            linhasCompletas.forEach(r => {
+                for (let c = 0; c < col; c++) {
+                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : this.cor;
+                }
+            });
+            tab();
+            blinkCount++;
+            if (blinkCount > 5) {
+                clearInterval(blinkInterval);
 
-        // Pontuação proporcional
-        score += 10 * linhasParaRemover.length;
-        lines += linhasParaRemover.length;
+                // Remove as linhas
+                linhasCompletas.forEach(r => {
+                    bord.splice(r, 1);
+                    bord.unshift(Array(col).fill(quad));
+                });
 
-        level = Math.floor(score / 50) + 1;
-        dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
+                score += 10 * linhasCompletas.length;
+                lines += linhasCompletas.length;
+                level = Math.floor(score / 50) + 1;
+                dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
 
+                updateScore();
+                tab();
+            }
+        }, 100);
+    } else {
         updateScore();
         tab();
     }
-
-    // Atualizações finais
-    level = Math.floor(score / 50) + 1;
-    dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
-    updateScore();
-    tab();
 }
 
 // ==========================
@@ -324,17 +332,24 @@ function dropLoop() {
 // ==========================
 // Start / Restart
 // ==========================
-startBtn.addEventListener('click', startGame);
-restartBtn.addEventListener('click', restartGame);
+startBtn.addEventListener('click', () => {
+    startGame();
+});
 
+restartBtn.addEventListener('click', () => {
+    restartGame();
+});
+
+// ==========================
+// Funções Start e Restart
+// ==========================
 function startGame() {
     if (gameStarted) return;
     gameStarted = true;
-    gameOver = false;
     startBtn.style.display = 'none';
     tutorialEl.style.display = 'block';
     resetBoard();
-    score = 0; lines = 0; level = 1; dropSpeed = 1000;
+    score = 0; lines = 0; level = 1; dropSpeed = 1000; gameOver = false;
     p = geraPecas();
     nextP = geraPecas();
     drawNextPiece(nextP);
@@ -346,40 +361,44 @@ function startGame() {
 }
 
 function restartGame() {
-    gameStarted = true;
-    gameOver = false;
+    gameStarted = false;
     gameOverScreen.style.visibility = 'hidden';
-    startBtn.style.display = 'none';
-    tutorialEl.style.display = 'block';
+    startBtn.style.display = 'block';
+    tutorialEl.style.display = 'none';
     clearInterval(timerInterval);
     resetBoard();
-    score = 0; lines = 0; level = 1; dropSpeed = 1000;
+    tab();
+    score = 0;
+    lines = 0;
+    level = 1;
+    dropSpeed = 1000;
+    gameOver = false;
     p = geraPecas();
     nextP = geraPecas();
     drawNextPiece(nextP);
     p.draw();
-    tab();
     updateScore();
-    iniciarTimer();
-    dropLoop();
 }
 
 // ==========================
-// Controles + Enter para start/restart
+// Controles
 // ==========================
 document.addEventListener("keydown", function (event) {
-    if (event.keyCode == 13) { // Enter
-        if (!gameStarted && !gameOver) startGame();
-        else if (gameOver) restartGame();
+    if(event.keyCode == 13) { // Enter
+        if(!gameStarted) {
+            startGame();
+        } else if(gameOver) {
+            restartGame();
+        }
     }
 
-    if ([37, 38, 39, 40].includes(event.keyCode)) event.preventDefault();
+    if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
 
-    if (gameStarted && !gameOver) {
-        if (event.keyCode == 37) p.moveLeft();
-        if (event.keyCode == 38) p.rotate();
-        if (event.keyCode == 39) p.moveRight();
-        if (event.keyCode == 40) p.moveDown();
+    if(gameStarted && !gameOver) {
+        if(event.keyCode == 37) p.moveLeft();
+        if(event.keyCode == 38) p.rotate();
+        if(event.keyCode == 39) p.moveRight();
+        if(event.keyCode == 40) p.moveDown();
     }
 });
 
@@ -395,7 +414,7 @@ function gameOverHandler() {
     if (currentUser) {
         let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
         ranking.push({ username: currentUser.username, score });
-        ranking.sort((a, b) => b.score - a.score);
+        ranking.sort((a,b) => b.score - a.score);
         localStorage.setItem("ranking", JSON.stringify(ranking));
     }
 }
