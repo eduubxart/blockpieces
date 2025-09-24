@@ -8,156 +8,45 @@ const timerEl = document.getElementById("timer");
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartBtn = document.getElementById('restart-btn');
 const startBtn = document.getElementById('start-btn');
-const starsCanvas = document.getElementById("stars-bg");
-const starsCtx = starsCanvas.getContext("2d");
-const nextCanvas = document.getElementById("nextPiece");
-const nextCtx = nextCanvas.getContext("2d");
-const tutorialEl = document.getElementById("tutorial");
-const linesEl = document.getElementById('lines');
-const levelEl = document.getElementById('level');
 
-starsCanvas.width = window.innerWidth;
-starsCanvas.height = window.innerHeight;
-window.addEventListener('resize', () => {
-    starsCanvas.width = window.innerWidth;
-    starsCanvas.height = window.innerHeight;
-});
-
-// ==========================
-// Estrelas de fundo
-// ==========================
-const layers = [
-    { count: 80, speed: 0.1, maxR: 1 },
-    { count: 50, speed: 0.3, maxR: 1.5 },
-    { count: 30, speed: 0.6, maxR: 2 }
-];
-
-let stars = [];
-
-function createStars() {
-    stars = [];
-    layers.forEach(layer => {
-        for (let i = 0; i < layer.count; i++) {
-            stars.push({
-                x: Math.random() * starsCanvas.width,
-                y: Math.random() * starsCanvas.height,
-                r: Math.random() * layer.maxR + 0.5,
-                alpha: Math.random(),
-                flicker: Math.random() * 0.05,
-                speed: layer.speed
-            });
-        }
-    });
-}
-createStars();
-
-function drawStars() {
-    starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
-    stars.forEach(star => {
-        const gradient = starsCtx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.r);
-        gradient.addColorStop(0, `rgba(255,255,255,${star.alpha})`);
-        gradient.addColorStop(0.5, `rgba(255,255,255,${star.alpha * 0.5})`);
-        gradient.addColorStop(1, 'rgba(255,255,255,0)');
-        starsCtx.fillStyle = gradient;
-        starsCtx.beginPath();
-        starsCtx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-        starsCtx.fill();
-
-        star.alpha += (Math.random() - 0.5) * star.flicker;
-        if (star.alpha < 0) star.alpha = 0;
-        if (star.alpha > 1) star.alpha = 1;
-        star.x -= star.speed;
-        if (star.x < 0) star.x = starsCanvas.width;
-    });
-    requestAnimationFrame(drawStars);
-}
-drawStars();
-
-// ==========================
-// Tabuleiro
-// ==========================
-const linha = 20;
+const quad = "BLACK";
+const sq = 20;
 const col = 10;
-const sq = 30;
-const quad = "black";
+const linha = 20;
 
-let bord = [];
+// ==========================
+// Variáveis de Jogo
+// ==========================
+let bord;
 let score = 0;
 let lines = 0;
 let level = 1;
-let dropSpeed = 1000;
+let dropStart;
 let gameOver = false;
 let gameStarted = false;
-
-let timer = 0;
+let dropSpeed = 1000;
+let gameInterval;
 let timerInterval;
-
-function resetBoard() {
-    bord = [];
-    for (let r = 0; r < linha; r++) {
-        bord[r] = Array(col).fill(quad);
-    }
-}
-
-function desenhaQuad(x, y, cor) {
-    con.fillStyle = cor;
-    con.fillRect(x * sq, y * sq, sq, sq);
-    con.strokeRect(x * sq, y * sq, sq, sq);
-}
+let timeLeft = 120;
 
 function tab() {
-    con.clearRect(0, 0, cvs.width, cvs.height);
     for (let r = 0; r < linha; r++) {
         for (let c = 0; c < col; c++) {
-            desenhaQuad(c, r, bord[r][c]);
+            drawSquare(c, r, bord[r][c]);
         }
     }
+}
+
+function drawSquare(x, y, color) {
+    con.fillStyle = color;
+    con.fillRect(x * sq, y * sq, sq, sq);
+
+    con.strokeStyle = "BLACK";
+    con.strokeRect(x * sq, y * sq, sq, sq);
 }
 
 // ==========================
 // Peças
-// ==========================
-const pecas = [
-    [Z, "red"],
-    [S, "green"],
-    [T, "yellow"],
-    [O, "blue"],
-    [L, "purple"],
-    [I, "cyan"],
-    [J, "orange"]
-];
-
-function geraPecas() {
-    let r = Math.floor(Math.random() * pecas.length);
-    return new Piece(pecas[r][0], pecas[r][1]);
-}
-
-let p = null;
-let nextP = null;
-
-// ==========================
-// Timer
-// ==========================
-function iniciarTimer() {
-    timer = 0;
-    timerEl.innerHTML = "Timer: 0s";
-    timerInterval = setInterval(() => {
-        timer++;
-        timerEl.innerHTML = "Timer: " + timer + "s";
-    }, 1000);
-}
-
-// ==========================
-// Score
-// ==========================
-function updateScore() {
-    scoreSist.innerHTML = "Score: " + score;
-    linesEl.innerHTML = "Lines: " + lines;
-    levelEl.innerHTML = "Level: " + level;
-}
-
-// ==========================
-// Classe Piece
 // ==========================
 function Piece(tetromino, cor) {
     this.tetromino = tetromino;
@@ -171,64 +60,61 @@ function Piece(tetromino, cor) {
 Piece.prototype.fill = function(cor) {
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
-            if (this.ativarTetromino[r][c]) desenhaQuad(this.x + c, this.y + r, cor);
+            if (this.ativarTetromino[r][c]) {
+                drawSquare(this.x + c, this.y + r, cor);
+            }
         }
     }
 }
 
-Piece.prototype.draw = function() { this.fill(this.cor); }
-Piece.prototype.unDraw = function() { this.fill(quad); }
+Piece.prototype.draw = function() {
+    this.fill(this.cor);
+}
 
-Piece.prototype.colisao = function(x, y, piece) {
-    for (let r = 0; r < piece.length; r++) {
-        for (let c = 0; c < piece[r].length; c++) {
-            if (!piece[r][c]) continue;
-            let newX = this.x + c + x;
-            let newY = this.y + r + y;
-            if (newX < 0 || newX >= col || newY >= linha) return true;
-            if (newY < 0) continue;
-            if (bord[newY][newX] != quad) return true;
-        }
-    }
-    return false;
+Piece.prototype.unDraw = function() {
+    this.fill(quad);
 }
 
 Piece.prototype.moveDown = function() {
-    if (!this.colisao(0, 1, this.ativarTetromino)) {
+    if (!this.collision(0, 1, this.ativarTetromino)) {
         this.unDraw();
         this.y++;
         this.draw();
     } else {
         this.lock();
-        if (!gameOver) {
-            p = nextP;
-            nextP = geraPecas();
-            drawNextPiece(nextP);
-        }
-    }
-}
-
-Piece.prototype.moveLeft = function() {
-    if (!this.colisao(-1, 0, this.ativarTetromino)) {
-        this.unDraw();
-        this.x--;
-        this.draw();
+        p = randomPiece();
     }
 }
 
 Piece.prototype.moveRight = function() {
-    if (!this.colisao(1, 0, this.ativarTetromino)) {
+    if (!this.collision(1, 0, this.ativarTetromino)) {
         this.unDraw();
         this.x++;
         this.draw();
     }
 }
 
+Piece.prototype.moveLeft = function() {
+    if (!this.collision(-1, 0, this.ativarTetromino)) {
+        this.unDraw();
+        this.x--;
+        this.draw();
+    }
+}
+
 Piece.prototype.rotate = function() {
-    let novoPad = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
+    let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
     let kick = 0;
-    if (this.colisao(0, 0, novoPad)) kick = (this.x > col / 2) ? -1 : 1;
-    if (!this.colisao(kick, 0, novoPad)) {
+
+    if (this.collision(0, 0, nextPattern)) {
+        if (this.x > col / 2) {
+            kick = -1;
+        } else {
+            kick = 1;
+        }
+    }
+
+    if (!this.collision(kick, 0, nextPattern)) {
         this.unDraw();
         this.x += kick;
         this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length;
@@ -237,9 +123,6 @@ Piece.prototype.rotate = function() {
     }
 }
 
-// ==========================
-// Novo lock() corrigido
-// ==========================
 Piece.prototype.lock = function() {
     for (let r = 0; r < this.ativarTetromino.length; r++) {
         for (let c = 0; c < this.ativarTetromino[r].length; c++) {
@@ -252,7 +135,7 @@ Piece.prototype.lock = function() {
         }
     }
 
-    // Procurar linhas completas
+    // Checa linhas completas
     let linhasCompletas = [];
     for (let r = linha - 1; r >= 0; r--) {
         if (bord[r].every(cell => cell != quad)) {
@@ -265,15 +148,15 @@ Piece.prototype.lock = function() {
         let blinkInterval = setInterval(() => {
             linhasCompletas.forEach(r => {
                 for (let c = 0; c < col; c++) {
-                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : this.cor;
+                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : "grey";
                 }
             });
             tab();
+
             blinkCount++;
             if (blinkCount > 5) {
                 clearInterval(blinkInterval);
 
-                // Remove as linhas
                 linhasCompletas.forEach(r => {
                     bord.splice(r, 1);
                     bord.unshift(Array(col).fill(quad));
@@ -294,129 +177,138 @@ Piece.prototype.lock = function() {
     }
 }
 
-// ==========================
-// Próxima peça
-// ==========================
-function drawNextPiece(piece) {
-    nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-    let shape = piece.tetromino[0];
-    const size = 30;
-    const pieceWidth = shape[0].length * size;
-    const pieceHeight = shape.length * size;
-    const offsetX = (nextCanvas.width - pieceWidth) / 2;
-    const offsetY = (nextCanvas.height - pieceHeight) / 2;
-    for (let r = 0; r < shape.length; r++) {
-        for (let c = 0; c < shape[r].length; c++) {
-            if (shape[r][c]) {
-                nextCtx.fillStyle = piece.cor;
-                nextCtx.fillRect(offsetX + c * size, offsetY + r * size, size, size);
-                nextCtx.strokeStyle = "#222";
-                nextCtx.strokeRect(offsetX + c * size, offsetY + r * size, size, size);
+Piece.prototype.collision = function(x, y, piece) {
+    for (let r = 0; r < piece.length; r++) {
+        for (let c = 0; c < piece[r].length; c++) {
+            if (!piece[r][c]) continue;
+            let newX = this.x + c + x;
+            let newY = this.y + r + y;
+
+            if (newX < 0 || newX >= col || newY >= linha) {
+                return true;
+            }
+            if (newY < 0) continue;
+            if (bord[newY][newX] != quad) {
+                return true;
             }
         }
     }
+    return false;
 }
 
 // ==========================
-// Loop de queda
+// Jogo
 // ==========================
-function dropLoop() {
-    if (!gameOver) {
+function randomPiece() {
+    let r = Math.floor(Math.random() * Pieces.length);
+    return new Piece(Pieces[r][0], Pieces[r][1]);
+}
+
+function updateScore() {
+    scoreSist.innerHTML = `Score: ${score} | Lines: ${lines} | Level: ${level}`;
+}
+
+function drop() {
+    let now = Date.now();
+    let delta = now - dropStart;
+    if (delta > dropSpeed) {
         p.moveDown();
-        tab();
-        p.draw();
-        setTimeout(dropLoop, dropSpeed);
+        dropStart = Date.now();
+    }
+    if (!gameOver) {
+        gameInterval = requestAnimationFrame(drop);
     }
 }
 
-// ==========================
-// Start / Restart
-// ==========================
-startBtn.addEventListener('click', () => {
-    startGame();
-});
+function startTimer() {
+    timeLeft = 120;
+    timerEl.textContent = timeLeft;
 
-restartBtn.addEventListener('click', () => {
-    restartGame();
-});
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = timeLeft;
 
-// ==========================
-// Funções Start e Restart
-// ==========================
-function startGame() {
-    if (gameStarted) return;
-    gameStarted = true;
-    startBtn.style.display = 'none';
-    tutorialEl.style.display = 'block';
-    resetBoard();
-    score = 0; lines = 0; level = 1; dropSpeed = 1000; gameOver = false;
-    p = geraPecas();
-    nextP = geraPecas();
-    drawNextPiece(nextP);
-    p.draw();
-    tab();
-    updateScore();
-    iniciarTimer();
-    dropLoop();
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            gameOverHandler();
+        }
+    }, 1000);
 }
 
-function restartGame() {
-    gameStarted = false;
-    gameOverScreen.style.visibility = 'hidden';
-    startBtn.style.display = 'block';
-    tutorialEl.style.display = 'none';
+function gameOverHandler() {
+    gameOver = true;
+    cancelAnimationFrame(gameInterval);
     clearInterval(timerInterval);
-    resetBoard();
-    tab();
+    gameOverScreen.style.display = 'block';
+
+    setTimeout(() => {
+        gameOverScreen.style.display = 'none';
+    }, 1500);
+}
+
+function resetGame() {
+    bord = [];
+    for (let r = 0; r < linha; r++) {
+        bord[r] = [];
+        for (let c = 0; c < col; c++) {
+            bord[r][c] = quad;
+        }
+    }
+
+    gameOver = false;
     score = 0;
     lines = 0;
     level = 1;
     dropSpeed = 1000;
-    gameOver = false;
-    p = geraPecas();
-    nextP = geraPecas();
-    drawNextPiece(nextP);
-    p.draw();
     updateScore();
+    tab();
+
+    p = randomPiece();
+    dropStart = Date.now();
+    gameInterval = requestAnimationFrame(drop);
+    startTimer();
 }
 
 // ==========================
 // Controles
 // ==========================
-document.addEventListener("keydown", function (event) {
-    if(event.keyCode == 13) { // Enter
-        if(!gameStarted) {
-            startGame();
-        } else if(gameOver) {
-            restartGame();
-        }
-    }
+document.addEventListener("keydown", function(event) {
+    if (gameOver || !gameStarted) return;
 
-    if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
-
-    if(gameStarted && !gameOver) {
-        if(event.keyCode == 37) p.moveLeft();
-        if(event.keyCode == 38) p.rotate();
-        if(event.keyCode == 39) p.moveRight();
-        if(event.keyCode == 40) p.moveDown();
+    if (event.keyCode == 37) {
+        p.moveLeft();
+        dropStart = Date.now();
+    } else if (event.keyCode == 38) {
+        p.rotate();
+        dropStart = Date.now();
+    } else if (event.keyCode == 39) {
+        p.moveRight();
+        dropStart = Date.now();
+    } else if (event.keyCode == 40) {
+        p.moveDown();
     }
 });
 
-// ==========================
-// Game over
-// ==========================
-function gameOverHandler() {
-    gameOver = true;
-    gameOverScreen.style.visibility = 'visible';
-    clearInterval(timerInterval);
-
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser) {
-        let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-        ranking.push({ username: currentUser.username, score });
-        ranking.sort((a,b) => b.score - a.score);
-        localStorage.setItem("ranking", JSON.stringify(ranking));
+// Enter → Start ou Restart
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        if (!gameStarted || gameOver) {
+            gameStarted = true;
+            gameOverScreen.style.display = 'none';
+            resetGame();
+        }
     }
-}
+});
+
+restartBtn.addEventListener("click", () => {
+    gameOverScreen.style.display = 'none';
+    resetGame();
+});
+
+startBtn.addEventListener("click", () => {
+    gameStarted = true;
+    gameOverScreen.style.display = 'none';
+    resetGame();
+});
 
 
