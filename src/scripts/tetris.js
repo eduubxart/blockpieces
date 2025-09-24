@@ -9,11 +9,8 @@ const gameOverScreen = document.getElementById('game-over-screen');
 const restartBtn = document.getElementById('restart-btn');
 const startBtn = document.getElementById('start-btn');
 
-// ==========================
-// Constantes do Tabuleiro
-// ==========================
 const quad = "BLACK";
-const sq = 20;
+const sq = 30;
 const col = 10;
 const linha = 20;
 
@@ -24,17 +21,30 @@ let bord;
 let score = 0;
 let lines = 0;
 let level = 1;
-let dropStart;
+let dropSpeed = 1000;
 let gameOver = false;
 let gameStarted = false;
-let dropSpeed = 1000;
+let dropInterval;
 let timerInterval;
-let timeLeft = 120;
 
 // ==========================
-// Tabuleiro
+// Funções do tabuleiro
 // ==========================
-function tab() {
+function resetBoard() {
+    bord = [];
+    for (let r = 0; r < linha; r++) {
+        bord[r] = Array(col).fill(quad);
+    }
+}
+
+function drawSquare(x, y, color) {
+    con.fillStyle = color;
+    con.fillRect(x * sq, y * sq, sq, sq);
+    con.strokeStyle = "BLACK";
+    con.strokeRect(x * sq, y * sq, sq, sq);
+}
+
+function drawBoard() {
     con.clearRect(0, 0, cvs.width, cvs.height);
     for (let r = 0; r < linha; r++) {
         for (let c = 0; c < col; c++) {
@@ -43,142 +53,30 @@ function tab() {
     }
 }
 
-function drawSquare(x, y, color) {
-    con.fillStyle = color;
-    con.fillRect(x * sq, y * sq, sq, sq);
-
-    con.strokeStyle = "BLACK";
-    con.strokeRect(x * sq, y * sq, sq, sq);
-}
-
 // ==========================
 // Peças
 // ==========================
-function Piece(tetromino, cor) {
+function Piece(tetromino, color) {
     this.tetromino = tetromino;
-    this.cor = cor;
+    this.color = color;
     this.tetrominoN = 0;
-    this.ativarTetromino = this.tetromino[this.tetrominoN];
+    this.activeTetromino = this.tetromino[this.tetrominoN];
     this.x = 3;
     this.y = -2;
 }
 
-Piece.prototype.fill = function(cor) {
-    for (let r = 0; r < this.ativarTetromino.length; r++) {
-        for (let c = 0; c < this.ativarTetromino[r].length; c++) {
-            if (this.ativarTetromino[r][c]) {
-                drawSquare(this.x + c, this.y + r, cor);
+Piece.prototype.fill = function(color) {
+    for (let r = 0; r < this.activeTetromino.length; r++) {
+        for (let c = 0; c < this.activeTetromino[r].length; c++) {
+            if (this.activeTetromino[r][c]) {
+                drawSquare(this.x + c, this.y + r, color);
             }
         }
     }
 }
 
-Piece.prototype.draw = function() {
-    this.fill(this.cor);
-}
-
-Piece.prototype.unDraw = function() {
-    this.fill(quad);
-}
-
-Piece.prototype.moveDown = function() {
-    if (!this.collision(0, 1, this.ativarTetromino)) {
-        this.unDraw();
-        this.y++;
-        this.draw();
-    } else {
-        this.lock();
-        p = randomPiece();
-        p.draw();
-    }
-}
-
-Piece.prototype.moveRight = function() {
-    if (!this.collision(1, 0, this.ativarTetromino)) {
-        this.unDraw();
-        this.x++;
-        this.draw();
-    }
-}
-
-Piece.prototype.moveLeft = function() {
-    if (!this.collision(-1, 0, this.ativarTetromino)) {
-        this.unDraw();
-        this.x--;
-        this.draw();
-    }
-}
-
-Piece.prototype.rotate = function() {
-    let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
-    let kick = 0;
-
-    if (this.collision(0, 0, nextPattern)) {
-        kick = (this.x > col / 2) ? -1 : 1;
-    }
-
-    if (!this.collision(kick, 0, nextPattern)) {
-        this.unDraw();
-        this.x += kick;
-        this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length;
-        this.ativarTetromino = this.tetromino[this.tetrominoN];
-        this.draw();
-    }
-}
-
-Piece.prototype.lock = function() {
-    for (let r = 0; r < this.ativarTetromino.length; r++) {
-        for (let c = 0; c < this.ativarTetromino[r].length; c++) {
-            if (!this.ativarTetromino[r][c]) continue;
-            if (this.y + r < 0) {
-                gameOverHandler();
-                return;
-            }
-            bord[this.y + r][this.x + c] = this.cor;
-        }
-    }
-
-    // Checa linhas completas
-    let linhasCompletas = [];
-    for (let r = linha - 1; r >= 0; r--) {
-        if (bord[r].every(cell => cell != quad)) {
-            linhasCompletas.push(r);
-        }
-    }
-
-    if (linhasCompletas.length > 0) {
-        let blinkCount = 0;
-        let blinkInterval = setInterval(() => {
-            linhasCompletas.forEach(r => {
-                for (let c = 0; c < col; c++) {
-                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : "grey";
-                }
-            });
-            tab();
-
-            blinkCount++;
-            if (blinkCount > 5) {
-                clearInterval(blinkInterval);
-
-                linhasCompletas.forEach(r => {
-                    bord.splice(r, 1);
-                    bord.unshift(Array(col).fill(quad));
-                });
-
-                score += 10 * linhasCompletas.length;
-                lines += linhasCompletas.length;
-                level = Math.floor(score / 50) + 1;
-                dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
-
-                updateScore();
-                tab();
-            }
-        }, 100);
-    } else {
-        updateScore();
-        tab();
-    }
-}
+Piece.prototype.draw = function() { this.fill(this.color); }
+Piece.prototype.unDraw = function() { this.fill(quad); }
 
 Piece.prototype.collision = function(x, y, piece) {
     for (let r = 0; r < piece.length; r++) {
@@ -186,135 +84,156 @@ Piece.prototype.collision = function(x, y, piece) {
             if (!piece[r][c]) continue;
             let newX = this.x + c + x;
             let newY = this.y + r + y;
-
-            if (newX < 0 || newX >= col || newY >= linha) {
-                return true;
-            }
+            if (newX < 0 || newX >= col || newY >= linha) return true;
             if (newY < 0) continue;
-            if (bord[newY][newX] != quad) {
-                return true;
-            }
+            if (bord[newY][newX] != quad) return true;
         }
     }
     return false;
 }
 
+Piece.prototype.moveDown = function() {
+    if (!this.collision(0, 1, this.activeTetromino)) {
+        this.unDraw();
+        this.y++;
+        this.draw();
+    } else {
+        this.lock();
+        p = nextP;
+        nextP = randomPiece();
+    }
+}
+
+Piece.prototype.moveLeft = function() {
+    if (!this.collision(-1, 0, this.activeTetromino)) {
+        this.unDraw();
+        this.x--;
+        this.draw();
+    }
+}
+
+Piece.prototype.moveRight = function() {
+    if (!this.collision(1, 0, this.activeTetromino)) {
+        this.unDraw();
+        this.x++;
+        this.draw();
+    }
+}
+
+Piece.prototype.rotate = function() {
+    let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
+    let kick = 0;
+    if (this.collision(0, 0, nextPattern)) kick = (this.x > col/2) ? -1 : 1;
+    if (!this.collision(kick, 0, nextPattern)) {
+        this.unDraw();
+        this.x += kick;
+        this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length;
+        this.activeTetromino = this.tetromino[this.tetrominoN];
+        this.draw();
+    }
+}
+
+Piece.prototype.lock = function() {
+    for (let r = 0; r < this.activeTetromino.length; r++) {
+        for (let c = 0; c < this.activeTetromino[r].length; c++) {
+            if (!this.activeTetromino[r][c]) continue;
+            if (this.y + r < 0) {
+                gameOverHandler();
+                return;
+            }
+            bord[this.y + r][this.x + c] = this.color;
+        }
+    }
+
+    // Linhas completas
+    let linhasCompletas = [];
+    for (let r = linha - 1; r >= 0; r--) {
+        if (bord[r].every(cell => cell != quad)) linhasCompletas.push(r);
+    }
+
+    if (linhasCompletas.length > 0) {
+        let blinkCount = 0;
+        let blinkInterval = setInterval(() => {
+            linhasCompletas.forEach(r => {
+                for (let c = 0; c < col; c++) {
+                    bord[r][c] = (blinkCount % 2 === 0) ? "white" : this.color;
+                }
+            });
+            drawBoard();
+            blinkCount++;
+            if (blinkCount > 5) {
+                clearInterval(blinkInterval);
+                linhasCompletas.forEach(r => {
+                    bord.splice(r, 1);
+                    bord.unshift(Array(col).fill(quad));
+                });
+                score += 10 * linhasCompletas.length;
+                lines += linhasCompletas.length;
+                level = Math.floor(score/50)+1;
+                dropSpeed = Math.max(1000 - (level-1)*100, 200);
+                drawBoard();
+            }
+        }, 100);
+    }
+}
+
 // ==========================
-// Jogo
+// Peças e início do jogo
 // ==========================
+let p;
+let nextP;
+const Pieces = [ /* Aqui você coloca os arrays de Tetrominos: Z, S, T, O, L, I, J */ ];
+
 function randomPiece() {
     let r = Math.floor(Math.random() * Pieces.length);
     return new Piece(Pieces[r][0], Pieces[r][1]);
 }
 
-function updateScore() {
-    scoreSist.innerHTML = `Score: ${score} | Lines: ${lines} | Level: ${level}`;
-}
-
+// ==========================
+// Loop de queda
+// ==========================
 function drop() {
-    let now = Date.now();
-    let delta = now - dropStart;
-
-    if (delta > dropSpeed) {
+    if(!gameOver) {
         p.moveDown();
-        dropStart = Date.now();
-    }
-
-    if (!gameOver) {
-        requestAnimationFrame(drop);
+        drawBoard();
+        dropInterval = setTimeout(drop, dropSpeed);
     }
 }
 
-function startTimer() {
-    timeLeft = 120;
-    timerEl.textContent = timeLeft;
-
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        timerEl.textContent = timeLeft;
-
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            gameOverHandler();
-        }
-    }, 1000);
-}
-
-function gameOverHandler() {
-    gameOver = true;
-    clearInterval(timerInterval);
-    gameOverScreen.style.display = 'block';
-
-    setTimeout(() => {
-        gameOverScreen.style.display = 'none';
-    }, 1500);
-}
-
-function resetGame() {
-    bord = [];
-    for (let r = 0; r < linha; r++) {
-        bord[r] = [];
-        for (let c = 0; c < col; c++) {
-            bord[r][c] = quad;
-        }
-    }
-
+// ==========================
+// Start / Restart
+// ==========================
+function startGame() {
+    gameStarted = true;
     gameOver = false;
-    score = 0;
-    lines = 0;
-    level = 1;
-    dropSpeed = 1000;
-    updateScore();
-    tab();
-
+    resetBoard();
+    score = 0; lines = 0; level = 1; dropSpeed = 1000;
     p = randomPiece();
-    p.draw();
-
-    dropStart = Date.now();
-    requestAnimationFrame(drop);
-    startTimer();
+    nextP = randomPiece();
+    drawBoard();
+    drop();
 }
+
+startBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', startGame);
 
 // ==========================
 // Controles
 // ==========================
 document.addEventListener("keydown", function(event) {
-    if (gameOver || !gameStarted) return;
+    if(!gameStarted || gameOver) return;
+    if([37,38,39,40].includes(event.keyCode)) event.preventDefault();
 
-    if (event.keyCode == 37) {
-        p.moveLeft();
-        dropStart = Date.now();
-    } else if (event.keyCode == 38) {
-        p.rotate();
-        dropStart = Date.now();
-    } else if (event.keyCode == 39) {
-        p.moveRight();
-        dropStart = Date.now();
-    } else if (event.keyCode == 40) {
-        p.moveDown();
-    }
+    if(event.keyCode == 37) p.moveLeft();
+    if(event.keyCode == 38) p.rotate();
+    if(event.keyCode == 39) p.moveRight();
+    if(event.keyCode == 40) p.moveDown();
 });
 
-// Enter → Start ou Restart
 document.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        if (!gameStarted || gameOver) {
-            gameStarted = true;
-            gameOverScreen.style.display = 'none';
-            resetGame();
-        }
+    if(event.key === "Enter") {
+        if(!gameStarted || gameOver) startGame();
     }
-});
-
-restartBtn.addEventListener("click", () => {
-    gameOverScreen.style.display = 'none';
-    resetGame();
-});
-
-startBtn.addEventListener("click", () => {
-    gameStarted = true;
-    gameOverScreen.style.display = 'none';
-    resetGame();
 });
 
 
