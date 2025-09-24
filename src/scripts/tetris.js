@@ -9,6 +9,9 @@ const gameOverScreen = document.getElementById('game-over-screen');
 const restartBtn = document.getElementById('restart-btn');
 const startBtn = document.getElementById('start-btn');
 
+// ==========================
+// Constantes do Tabuleiro
+// ==========================
 const quad = "BLACK";
 const sq = 20;
 const col = 10;
@@ -25,11 +28,14 @@ let dropStart;
 let gameOver = false;
 let gameStarted = false;
 let dropSpeed = 1000;
-let gameInterval;
 let timerInterval;
 let timeLeft = 120;
 
+// ==========================
+// Tabuleiro
+// ==========================
 function tab() {
+    con.clearRect(0, 0, cvs.width, cvs.height);
     for (let r = 0; r < linha; r++) {
         for (let c = 0; c < col; c++) {
             drawSquare(c, r, bord[r][c]);
@@ -83,6 +89,7 @@ Piece.prototype.moveDown = function() {
     } else {
         this.lock();
         p = randomPiece();
+        p.draw();
     }
 }
 
@@ -107,11 +114,7 @@ Piece.prototype.rotate = function() {
     let kick = 0;
 
     if (this.collision(0, 0, nextPattern)) {
-        if (this.x > col / 2) {
-            kick = -1;
-        } else {
-            kick = 1;
-        }
+        kick = (this.x > col / 2) ? -1 : 1;
     }
 
     if (!this.collision(kick, 0, nextPattern)) {
@@ -211,12 +214,14 @@ function updateScore() {
 function drop() {
     let now = Date.now();
     let delta = now - dropStart;
+
     if (delta > dropSpeed) {
         p.moveDown();
         dropStart = Date.now();
     }
+
     if (!gameOver) {
-        gameInterval = requestAnimationFrame(drop);
+        requestAnimationFrame(drop);
     }
 }
 
@@ -237,7 +242,6 @@ function startTimer() {
 
 function gameOverHandler() {
     gameOver = true;
-    cancelAnimationFrame(gameInterval);
     clearInterval(timerInterval);
     gameOverScreen.style.display = 'block';
 
@@ -264,8 +268,10 @@ function resetGame() {
     tab();
 
     p = randomPiece();
+    p.draw();
+
     dropStart = Date.now();
-    gameInterval = requestAnimationFrame(drop);
+    requestAnimationFrame(drop);
     startTimer();
 }
 
@@ -310,5 +316,6 @@ startBtn.addEventListener("click", () => {
     gameOverScreen.style.display = 'none';
     resetGame();
 });
+
 
 
