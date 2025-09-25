@@ -267,30 +267,37 @@ Piece.prototype.lock = function () {
   } else {
     updateScore();
     tab();
+  }
     p = nextP;
     nextP = geraPecas();
     drawNextPiece(nextP);
-  }
-};
-function drawNextPiece(piece) {
-  nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-  let shape = piece.tetromino[0];
-  const size = 30;
-  const pieceWidth = shape[0].length * size;
-  const pieceHeight = shape.length * size;
-  const offsetX = (nextCanvas.width - pieceWidth) / 2;
-  const offsetY = (nextCanvas.height - pieceHeight) / 2;
-  for (let r = 0; r < shape.length; r++) {
-    for (let c = 0; c < shape[r].length; c++) {
-      if (shape[r][c]) {
-        nextCtx.fillStyle = piece.cor;
-        nextCtx.fillRect(offsetX + c * size, offsetY + r * size, size, size);
-        nextCtx.strokeStyle = "#222";
-        nextCtx.strokeRect(offsetX + c * size, offsetY + r * size, size, size);
-      }
+  };
+  function drawNextPiece(piece) {
+    nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
+    nextCanvas.width = nextCanvas.width;  // isso força reset total
+
+    if (!piece || !piece.tetromino || !piece.tetromino[0]) return;
+
+    let shape = piece.tetromino[0];
+    const size = 30;
+    const pieceWidth = shape[0].length * size;
+    const pieceHeight = shape.length * size;
+    const offsetX = (nextCanvas.width - pieceWidth) / 2;
+    const offsetY = (nextCanvas.height - pieceHeight) / 2;
+
+    for (let r = 0; r < shape.length; r++) {
+        for (let c = 0; c < shape[r].length; c++) {
+            if (shape[r][c]) {
+                nextCtx.fillStyle = piece.cor;
+                nextCtx.fillRect(offsetX + c * size, offsetY + r * size, size, size);
+                nextCtx.strokeStyle = "#222";
+                nextCtx.strokeRect(offsetX + c * size, offsetY + r * size, size, size);
+            }
+        }
     }
-  }
 }
+
+
 let lastDropTime = 0;
 function dropLoop() {
   if (!gameOver) {
