@@ -1,53 +1,65 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlockPieces</title>
-<link rel="stylesheet" href="/src/styles/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>blockpieces</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<canvas id="stars-bg"></canvas>
-
-<div id="game-over-screen">GAME OVER<button id="restart-btn">Reiniciar</button></div>
-
-<div class="game-container">
-  <div class="game-canvas">
-    <canvas id="gameCanvas" width="300" height="600"></canvas>
+  <!-- Tela de game over -->
+  <div id="game-over-screen">
+    GAME OVER
+    <button id="restart-btn">Reiniciar</button>
   </div>
 
-  <div class="game-sidebar">
-    <div id="score">Score: 0</div>
-    <div id="timer">Timer: 0</div>
-    <div id="lines">Lines: 0</div>
-    <div id="level">Level: 0</div>
+  <!-- Container principal do jogo -->
+  <div class="game-container">
+    <!-- Tabuleiro -->
+    <div class="game-canvas">
+      <canvas id="gameCanvas" width="300" height="600"></canvas>
+    </div>
 
-    <h3>Próxima peça:</h3>
-    <canvas id="nextPiece" width="120" height="120"></canvas>
+    <!-- Sidebar -->
+    <div class="game-sidebar">
+      <div id="score">Score: 0</div>
+      <div id="timer">Timer: 0</div>
+      <div id="lines">Lines: 0</div>
+      <div id="level">Level: 0</div>
 
-    <button id="start-btn">Start</button>
-    <div id="tutorial" class="tutorial">Use as setas para mover/girar peças</div>
+      <h3>Próxima peça:</h3>
+      <canvas id="nextPiece" width="120" height="120"></canvas>
+      <canvas id="stars-bg"></canvas>
+
+      <button id="start-btn">Start</button>    
+
+      <div id="tutorial" class="tutorial">
+        <p>Use as setas ⬅️➡️⬆️⬇️ para mover e girar as peças.</p>
+        <p>Complete linhas para ganhar pontos e subir de nível!</p>
+      </div>
+
+      
+    </div>
   </div>
-</div>
 
-<!-- Avatares / GitHub -->
-<div class="header">
-  <div class="avatar-block">
-    <a href="https://github.com/eduubxart" target="_blank">
-      <img src="/assets/pixelart/eu (1).gif" class="avataredu">
-    </a>
-    <p class="avatar-text">Conheça no GitHub</p>
-  </div>
-  <div class="avatar-block">
-    <a href="https://github.com/Suzii19" target="_blank">
-      <img src="/assets/pixelart/theszi.gif" class="avatarsuzi">
-    </a>
-    <p class="avatar-text">Conheça no GitHub</p>
-  </div>
-</div>
+  <!-- Avatares/GitHub -->
+  <div class="header">
+    <div class="avatar-block">
+      <a href="https://github.com/eduubxart" target="_blank">
+        <img src="/assets/pixelart/eu (1).gif" class="avataredu">
+      </a>
+      <p class="avatar-text">Conheça no GitHub</p>
+    </div>
 
-<script type="module" src="/src/scripts/game.js"></script>
+    <div class="avatar-block">
+      <a href="https://github.com/Suzii19" target="_blank">
+        <img src="/assets/pixelart/theszi.gif" class="avatarsuzi">
+      </a>
+      <p class="avatar-text">Conheça no GitHub</p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/scripts/tetris.js"></script>
 </body>
 </html>
