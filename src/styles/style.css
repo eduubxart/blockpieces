@@ -18,6 +18,7 @@ body {
   align-items: center; /* centraliza horizontalmente */
   min-height: 100vh; /* garante que ocupe a altura total da tela */
 }
+
 #stars-bg {
   position: fixed;
   top: 0;
@@ -30,98 +31,95 @@ body {
 
 /* ===================== TÍTULO ===================== */
 .title {
-  margin-top: 20px; /* espaço acima do título */
-  margin-bottom: 20px; /* espaço abaixo do título */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .title h1 {
-  font-size: 40px; /* tamanho da fonte do título */
-  animation: rainbow 5s infinite; /* animação de cores no título */
+  font-size: 40px;
+  animation: rainbow 5s infinite;
 }
 
 @keyframes rainbow {
-  0% { color: rgb(255, 0, 0); } /* vermelho */
-  20% { color: orange; } /* laranja */
-  40% { color: yellow; } /* amarelo */
-  60% { color: green; } /* verde */
-  80% { color: blue; } /* azul */
-  100% { color: violet; } /* violeta */
+  0% { color: rgb(255, 0, 0); }
+  20% { color: orange; }
+  40% { color: yellow; }
+  60% { color: green; }
+  80% { color: blue; }
+  100% { color: violet; }
 }
 
 /* ===================== CONTAINER DO JOGO ===================== */
 .game-container {
-  display: flex; /* ativa flexbox pra alinhar grid + sidebar */
-  margin-top: 60px; /* não deixa ficar no topo da pag*/
-  justify-content: center; /* centraliza horizontalmente */
-  align-items: flex-start; /* alinha pelo topo */
-  gap: 20px; /* espaço entre o canvas e a sidebar */
+  display: flex;
+  margin-top: 60px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 /* ===================== CANVAS / TABULEIRO ===================== */
 .game-canvas canvas {
-  background: #000000; /* fundo do tabuleiro */
-  border: 2px solid #000000; /* borda do canvas */
-  box-shadow: 0 0 10px rgb(255, 255, 255); /* brilho ao redor */
-  border-radius: 2%; /* cantos arredondados */
-  display: block; /* faz o canvas se comportar como bloco */
-  margin: auto; /* centraliza dentro da div */
+  background: #000000;
+  border: 2px solid #000000;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  border-radius: 2%;
+  display: block;
+  margin: auto;
 }
 
 /* ===================== SIDEBAR ===================== */
 .game-sidebar {
-  display: flex;              /* flex vertical */
-  flex-direction: column;     /* organiza elementos em coluna */
-  align-items: center;        /* centraliza horizontalmente */
-  gap: 20px;                  /* espaço entre elementos */
-  color: white;               /* cor do texto */
-  width: 150px;               /* largura fixa */
-  position: relative;         /* mantém no fluxo normal da página */
-  margin-left: 10px;          /* se quiser um espacinho do tabuleiro */
-} 
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: white;
+  width: 150px;
+  position: relative;
+  margin-left: 10px;
+}
 
 /* ===================== SCORE / TIMER / LINES / LEVEL ===================== */
 .game-sidebar #score,
 .game-sidebar #timer,
 .game-sidebar #lines,
 .game-sidebar #level {
-  font-size: 15px;/* tamanho do texto */
-  padding: 8px 12px;/* espaçamento interno */
-  background: #000000;/* fundo preto */
-  border: 2px solid #555;/* borda cinza */
-  border-radius: 6px;/* cantos arredondados */
-  width: 120px;/* largura fixa */
-  text-align: center;/* centraliza o texto */
+  font-size: 15px;
+  padding: 8px 12px;
+  background: #000000;
+  border: 2px solid #555;
+  border-radius: 6px;
+  width: 120px;
+  text-align: center;
 }
-
 
 /* ===================== PRÓXIMA PEÇA ===================== */
 .game-sidebar canvas {
-  background: #000000; /* fundo do preview */
-  border: 2px solid #555; /* borda do preview */
-  border-radius: 6px; /* cantos arredondados */
+  background: #000000;
+  border: 2px solid #555;
+  border-radius: 6px;
 }
+
 /* ===================== BOTÕES ===================== */
 #start-btn {
   font-family: 'Press Start 2P', monospace, cursive;
   font-size: 18px;
-  color: rgb(255, 255, 255); /* cor neon */
+  color: rgb(255, 255, 255);
   background-color: #000000;
-  border: 2px solid rgb(136, 136, 136);
+  border: 2px solid #888;
   padding: 14px 28px;
   border-radius: 6px;
   cursor: pointer;
   text-align: center;
   transition: all 0.2s ease-in-out;
-  
   margin-bottom: 20px;
   display: inline-block;
 }
 
 #start-btn:hover {
   background-color: #000;
-  border-color: rgb(138, 138, 138);
-  
+  border-color: #aaa;
   transform: scale(1.1);
 }
 
@@ -130,93 +128,163 @@ body {
   box-shadow: 0 0 10px rgb(0, 0, 0) inset;
 }
 
+/* Botões globais */
+.login-button, .ranking-button, .ranking-container button {
+  font-family: 'Press Start 2P', monospace, cursive;
+  font-size: 14px;
+  color: #fff;
+  background-color: #000;
+  border: 2px solid #888;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px;
+}
+
+.login-button:hover, .ranking-button:hover, .ranking-container button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #fff;
+}
 
 /* ===================== TUTORIAL ===================== */
 .tutorial {
-    position: absolute;        /* relativo ao header */
-    top: 460px;                 /* distancia abaixo do score-area */
-    left: -50%;
-    transform: translateX(38%);
-    background: rgba(0, 0, 0, 0.7);
-    color:#555(100% 0.01 -0.01);
-    font-family: 'Press Start 2P', monospace;
-    font-size: 10px;
-    padding: 19px 19px;
-    border: 2px solid #555;
-    border-radius: 6px;
-    text-align: center;
-    display: none;             /* inicialmente escondido */
-    z-index: 10;
+  position: absolute;
+  top: 460px;
+  left: -50%;
+  transform: translateX(38%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #ccc; /* corrigido */
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 19px 19px;
+  border: 2px solid #555;
+  border-radius: 6px;
+  text-align: center;
+  display: none;
+  z-index: 10;
 }
-
 
 /* ===================== GAME OVER ===================== */
 #game-over-screen {
-  font-family: 'Press Start 2P',monospace, cursive; /* fonte pixelada */
-  position: fixed; /* fixa na tela inteira */
-  top: 0; /* topo da tela */
-  left: 0; /* esquerda da tela */
-  width: 100vw; /* largura total da tela */
-  height: 100vh; /* altura total da tela */
-  background: rgba(0, 0, 0, 0.95); /* fundo semi-transparente */
-  color: rgb(212, 6, 6); /* cor do texto */
-  font-size: 80px; /* tamanho do texto */
-  font-weight: bold; /* negrito */
-  display: flex; /* flexbox para centralizar conteúdo */
-  justify-content: center; /* centraliza horizontalmente */
-  align-items: center; /* centraliza verticalmente */
-  flex-direction: column; /* organiza título e botão em coluna */
-  user-select: none; /* impede seleção de texto */
-  visibility: hidden; /* começa escondido */
-  z-index: 9999; /* fica por cima de tudo */
+  font-family: 'Press Start 2P',monospace, cursive;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  color: rgb(212, 6, 6);
+  font-size: 80px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  user-select: none;
+  visibility: hidden;
+  z-index: 9999;
 }
 
 #game-over-screen button {
-  font-family: 'Press Start 2P', monospace, cursive;  /* fonte pixelada */
-  font-size: 20px; /* tamanho do texto do botão */
-  color: white; /* cor do texto */
-  background: none; /* sem fundo */
-  border: none; /* sem borda */
-  cursor: pointer; /* cursor de mão */
-  text-shadow: 0 0 4px red; /* efeito glow */
-  margin-top: 20px; /* espaço acima do botão */
+  font-family: 'Press Start 2P', monospace, cursive;
+  font-size: 20px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-shadow: 0 0 4px red;
+  margin-top: 20px;
 }
 
 #game-over-screen button:hover {
-  background-color: darkred; /* fundo quando passa o mouse */
-  box-shadow: 0 0 25px darkred; /* brilho quando passa o mouse */
+  background-color: darkred;
+  box-shadow: 0 0 25px darkred;
+}
+/* ===================== LOGIN ===================== */
+.login-container {
+  margin-top: 80px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #555;
+  border-radius: 10px;
+  padding: 30px 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+}
+
+.login-container h2 {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #000;
+  border: 2px solid #555;
+  border-radius: 6px;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  outline: none;
+}
+
+.login-container input:focus {
+  border-color: #fff;
+  box-shadow: 0 0 8px #fff;
+}
+
+.login-container button {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #fff;
+  background-color: #000;
+  border: 2px solid #888;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.login-container button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #fff;
 }
 
 /* ===================== HEADER / AVATARES ===================== */
 .header {
   display: flex;
-  justify-content: center; /* centraliza os avatares */
-  gap: 40px;              /* espaço entre eles */
+  justify-content: center;
+  gap: 40px;
   align-items: center;
   padding: 10px 20px;
 }
 
 .avatar-block {
   display: flex;
-  flex-direction: column; /* avatar em cima, texto embaixo */
+  flex-direction: column;
   align-items: center;
-  gap: 6px;               /* espaço entre avatar e texto */
+  gap: 6px;
 }
 
 .avataredu, .avatarsuzi {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   image-rendering: pixelated;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-.avataredu {
-  width: 100px;
-  height: 100px;
-}
 
 .avataredu:hover, .avatarsuzi:hover {
-  transform: scale(1.2); /* efeito hover simples */
+  transform: scale(1.2);
 }
 
 .avatar-text {
@@ -225,6 +293,8 @@ body {
   color: white;
   text-align: center;
 }
+
+/* ===================== RANKING ===================== */
 .ranking-table {
   width: 100%;
   border-collapse: collapse;
@@ -243,4 +313,3 @@ body {
 .ranking-table th {
   background: rgba(255, 255, 255, 0.1);
 }
-

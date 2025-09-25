@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>blockpieces - Ranking</title>
-  <link rel="stylesheet" href="/src/styles/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking - BlockPieces</title>
+<link rel="stylesheet" href="/src/styles/style.css">
 </head>
 <body>
-  <div class="title">
-    <h1>blockpieces</h1>
-  </div>
 
-  <div class="ranking-container">
-    <h2>Ranking de Jogadores</h2>
-    <table class="ranking-table">
-      <thead>
-        <tr>
-          <th>Posição</th>
-          <th>Jogador</th>
-          <th>Pontuação</th>
-        </tr>
-      </thead>
-      <tbody id="ranking-body">
-        <!-- As linhas do ranking serão inseridas aqui via JavaScript -->
-      </tbody>
-    </table>
-    <button onclick="location.href='index.html'">Voltar ao Início</button>
-  </div>
+<div class="ranking-container">
+  <h2>Ranking</h2>
+  <table class="ranking-table" id="ranking-table">
+    <!-- Linhas do ranking preenchidas por ranking.js -->
+  </table>
+</div>
 
-  <script src="../scripts/ranking.js"></script>
+<script type="module" src="/src/scripts/ranking.js"></script>
 </body>
 </html>

@@ -1,27 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">  
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>blockpieces - Login</title>
-  <link rel="stylesheet" href="/src/styles/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - BlockPieces</title>
+<link rel="stylesheet" href="/src/styles/style.css">
 </head>
 <body>
-  <div class="title">
-    <h1>blockpieces</h1>
-  </div>
 
-  <div class="login-container">
-    <h2>Login</h2>
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Nome de usuário" required>
-      <input type="password" id="password" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
-    </form>
-    <p id="login-message"></p>
-    <button onclick="location.href='index.html'">Voltar ao Início</button>
+<div class="login-container">
+  <h2>Escolha Nome e Avatar</h2>
+  <input type="text" id="username" placeholder="Nome único">
+  <div id="avatar-picker">
+    <!-- Avatares disponíveis -->
   </div>
+  <button id="start-game">Entrar</button>
+</div>
 
-  <script src="../scripts/login.js"></script>
+<script type="module" src="/src/scripts/login.js"></script>
+</body>
 </html>
