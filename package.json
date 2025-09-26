@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "dev": "concurrently \"nodemon server.js\" \"vite\"",
-    "start": "node server.js"
+ "scripts": {
+  "dev": "concurrently \"nodemon server.js\" \"vite\"",
+  "start": "node server.js",
+  "build": "vite build"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,7 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.10",
-    "vite": "^7.1.5"
+    "vite": "^7.1.7"
   },
   "dependencies": {
     "express": "^5.1.0",
