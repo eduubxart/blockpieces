@@ -18,12 +18,16 @@ mongoose.connect('mongodb+srv://fariabragaeduardo_db_user:senacprojeto09@cluster
 // Rotas do backend
 app.use('/api/users', userRoutes);
 
-// Servir arquivos estáticos (HTML/CSS/JS)
-app.use(express.static(path.join(__dirname, 'src')));
+// Servir arquivos estáticos do build do Vite
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Para abrir index.html por padrão
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/index.html'));
+// Rota fallback para o index.html do Vite
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
+// Não usar porta fixa; Vercel define via process.env.PORT
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+
+export default app;
