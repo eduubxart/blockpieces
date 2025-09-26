@@ -3,18 +3,16 @@ import { defineConfig } from 'vite'
 import path from 'path'
 
 export default defineConfig({
-  root: './src', // pasta onde estão seus arquivos HTML/JS/CSS
+  root: './src', // onde está seu index.html
   build: {
     outDir: '../dist', // pasta de saída do build
-    emptyOutDir: true, // limpa dist antes de buildar
+    emptyOutDir: true,
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'src/index.html') // ponto de entrada do seu jogo
-      }
+      input: path.resolve(__dirname, 'src/index.html')
     }
   },
   server: {
-    port: 3000, // porta para rodar localmente
-    open: true // abre no navegador automaticamente
+    port: 3000,
+    open: true
   }
 })
