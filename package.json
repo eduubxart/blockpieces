@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "type": "module",
- "scripts": {
+"scripts": {
   "dev": "concurrently \"nodemon server.js\" \"vite\"",
   "start": "node server.js",
-  "build": "vite build"
-  },
+  "build": "npx vite build"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eduubxart/blockpieces.git"
