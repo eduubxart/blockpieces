@@ -1,0 +1,56 @@
+/* ===================== FONTE / BODY / BOTÕES GLOBAIS ===================== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  font-family: 'Press Start 2P', monospace, cursive;
+  background-color: black;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.title {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.title h1 {
+  font-size: 40px;
+  animation: rainbow 5s infinite;
+}
+
+@keyframes rainbow {
+  0% { color: rgb(255, 0, 0); }
+  20% { color: orange; }
+  40% { color: yellow; }
+  60% { color: green; }
+  80% { color: blue; }
+  100% { color: violet; }
+}
+
+/* Botões globais */
+.login-button, .ranking-button, .ranking-container button {
+  font-family: 'Press Start 2P', monospace, cursive;
+  font-size: 14px;
+  color: #fff;
+  background-color: #000;
+  border: 2px solid #888;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px;
+}
+
+.login-button:hover, .ranking-button:hover, .ranking-container button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #fff;
+}

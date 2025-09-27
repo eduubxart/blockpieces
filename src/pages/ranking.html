@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ranking BlockPieces</title>
-<link rel="stylesheet" href="/src/styles/style.css"> <!-- usa seu CSS atual -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking - BlockPieces</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/ranking.css">
 </head>
 <body>
-  <h1>Ranking BlockPieces</h1>
+  <div class="header">
+    <h1>Ranking BlockPieces</h1>
+  </div>
 
   <div id="ranking-container">
     <h2>Pódio</h2>
@@ -16,14 +19,13 @@
       <div id="primeiro" class="podio-slot"></div>
       <div id="terceiro" class="podio-slot"></div>
     </div>
-  
+
     <h2>Outros Jogadores</h2>
     <div id="outros-ranking" class="outros-jogadores"></div>
-  
-    <button onclick="location.href='/login.html'">Voltar</button>
-  </div>
-  
 
-  <script type="module" src="/src/scripts/ranking.js"></script>
+    <button class="login-button" onclick="window.location.href='index.html'">Voltar</button>
+  </div>
+
+  <script type="module" src="../scripts/ranking.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 const cvs = document.getElementById("gameCanvas");
 const con = cvs.getContext("2d");
 const scoreSist = document.getElementById("score");
@@ -368,15 +369,30 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-function gameOverHandler() {
+async function gameOverHandler() {
   gameOver = true;
   gameOverScreen.style.visibility = "visible";
   clearInterval(timerInterval);
+
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  if (currentUser) {
-    let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-    ranking.push({ username: currentUser.username, score });
-    ranking.sort((a, b) => b.score - a.score);
-    localStorage.setItem("ranking", JSON.stringify(ranking));
+  if (!currentUser) return;
+
+  try {
+    // envia score pro backend
+    const res = await fetch('/api/users/score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: currentUser.username,
+        score: score
+      })
+    });
+
+    if (!res.ok) {
+      console.error("Erro ao enviar score:", await res.text());
+    }
+
+  } catch (error) {
+    console.error("Erro no gameOverHandler:", error);
   }
 }

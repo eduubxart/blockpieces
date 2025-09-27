@@ -1,0 +1,131 @@
+/* ===================== CONTAINER ===================== */
+.game-container {
+  display: flex;
+  margin-top: 60px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* ===================== CANVAS / TABULEIRO ===================== */
+.game-canvas canvas {
+  background: #000000;
+  border: 2px solid #000000;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  border-radius: 2%;
+  display: block;
+  margin: auto;
+}
+
+/* ===================== SIDEBAR ===================== */
+.game-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: white;
+  width: 150px;
+  position: relative;
+  margin-left: 10px;
+}
+
+.game-sidebar #score,
+.game-sidebar #timer,
+.game-sidebar #lines,
+.game-sidebar #level {
+  font-size: 15px;
+  padding: 8px 12px;
+  background: #000000;
+  border: 2px solid #555;
+  border-radius: 6px;
+  width: 120px;
+  text-align: center;
+}
+
+.game-sidebar canvas {
+  background: #000000;
+  border: 2px solid #555;
+  border-radius: 6px;
+}
+
+/* ===================== BOTÃO START ===================== */
+#start-btn {
+  font-family: 'Press Start 2P', monospace, cursive;
+  font-size: 18px;
+  color: rgb(255, 255, 255);
+  background-color: #000000;
+  border: 2px solid #888;
+  padding: 14px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+#start-btn:hover {
+  background-color: #000;
+  border-color: #aaa;
+  transform: scale(1.1);
+}
+
+#start-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 10px rgb(0, 0, 0) inset;
+}
+
+/* ===================== TUTORIAL ===================== */
+.tutorial {
+  position: absolute;
+  top: 460px;
+  left: -50%;
+  transform: translateX(38%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 20px 20px;
+  border: 2px solid #555;
+  border-radius: 6%;
+  text-align: center;
+  display: none;
+  z-index: 10;
+}
+
+/* ===================== GAME OVER ===================== */
+#game-over-screen {
+  font-family: 'Press Start 2P', monospace, cursive;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  color: rgb(212, 6, 6);
+  font-size: 80px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  user-select: none;
+  visibility: hidden;
+  z-index: 9999;
+}
+
+#game-over-screen button {
+  font-family: 'Press Start 2P', monospace, cursive;
+  font-size: 20px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-shadow: 0 0 4px red;
+  margin-top: 20px;
+}
+
+#game-over-screen button:hover {
+  background-color: darkred;
+  box-shadow: 0 0 25px darkred;
+}

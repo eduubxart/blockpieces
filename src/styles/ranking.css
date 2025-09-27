@@ -1,0 +1,96 @@
+/* ===================== PODIO ===================== */
+#podio {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.podio-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 120px;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  padding-top: 5px;
+}
+
+#primeiro { background: linear-gradient(to top, gold, #ffd700); height: 180px; }
+#segundo { background: linear-gradient(to top, silver, #c0c0c0); height: 140px; }
+#terceiro { background: linear-gradient(to top, #cd7f32, #b87333); height: 120px; }
+
+.podio-slot img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #222;
+  margin-bottom: 10px;
+}
+
+.podio-slot p:first-of-type { font-size: 0.8rem; margin: 0; }
+.podio-slot p:last-of-type  { font-size: 0.7rem; margin: 0; }
+
+/* ===================== OUTROS JOGADORES ===================== */
+.outros-jogadores {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto 20px auto;
+}
+
+.rank-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #222;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.rank-slot img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #555;
+}
+
+/* ===================== HEADER / AVATARES ===================== */
+.header {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.avataredu, .avatarsuzi {
+  width: 120px;
+  height: 120px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.avataredu:hover, .avatarsuzi:hover {
+  transform: scale(1.2);
+}
+
+.avatar-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: white;
+  text-align: center;
+}

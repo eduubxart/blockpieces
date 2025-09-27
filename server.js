@@ -21,12 +21,12 @@ app.use('/api/users', userRoutes);
 // Servir arquivos estáticos do build do Vite
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Rota fallback para o index.html do Vite
+// Rota fallback → direciona sempre pro game.html
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist/pages/game.html'));
 });
 
-// Não usar porta fixa; Vercel define via process.env.PORT
+// Porta dinâmica (pra Vercel)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
 
