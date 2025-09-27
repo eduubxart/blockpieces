@@ -11,23 +11,21 @@ const app = express();
 app.use(express.json());
 
 // Conectar MongoDB
-mongoose.connect('mongodb+srv://fariabragaeduardo_db_user:senacprojeto09@cluster0.v9vajog.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect('mongodb+srv://fariabragaeduardo_db_user:sLTwu3KvBix3YNj9@cluster0.v9vajog.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
     .then(() => console.log('MongoDB conectado'))
     .catch(err => console.log(err));
 
-// Rotas do backend
+// Rotas do backend (API)
 app.use('/api/users', userRoutes);
 
 // Servir arquivos estáticos do build do Vite
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Rota fallback → direciona sempre pro game.html
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/pages/game.html'));
+// Rota fallback → só para páginas do frontend, ignora /api
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/pages/ranking.html'));
 });
 
-// Porta dinâmica (pra Vercel)
+// Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-
-export default app;
