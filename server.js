@@ -1,14 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import userRoutes from './server/routes/userRoutes.js'; // Caminho corrigido para o Vercel
-import gameRoutes from './server/routes/gameRoutes.js'; // Caminho corrigido para o Vercel
+import userRoutes from './server/routes/UserRoutes.js'; // CORRIGIDO: Agora aponta para a pasta 'server/'
+import gameRoutes from './server/routes/GameRoutes.js'; // CORRIGIDO: Agora aponta para a pasta 'server/'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Configuração para utilizar __dirname e __filename em módulos ES (import/export)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -16,24 +15,21 @@ const app = express();
 app.use(express.json());
 
 // Conectar MongoDB
-// O Vercel deve estar configurado com a variável de ambiente MONGO_URI
+// Nota: O MONGO_URI deve estar configurado no painel da Vercel!
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB conectado'))
-  .catch(err => console.error('Erro ao conectar ao MongoDB:', err)); 
+  .catch(err => console.log('Erro ao conectar ao MongoDB:', err)); 
 
 // Rotas do backend (API)
-app.use('/api/users', userRoutes); // Rota para autenticação e dados do usuário
-app.use('/api/game', gameRoutes);   // Rota para ranking e score
+app.use('/api/users', userRoutes);
+app.use('/api/game', gameRoutes);
 
-// NOTE: A linha app.use(express.static(...)) foi removida.
-// O Vercel serve arquivos estáticos de forma mais eficiente (como configurado no vercel.json).
+// Servir arquivos estáticos do build do Vite foi removido, pois o Vercel faz isso de forma mais eficiente (via vercel.json).
 
-// Rota fallback (catch-all)
-// Se a Vercel não resolver o caminho estático, o Express envia o index.html
-// O caminho agora é 'dist/index.html' para ser consistente com o vercel.json
+// Rota fallback -> qualquer rota que não seja /api vai para a página principal (index.html)
 app.get(/^\/(?!api).*/, (req, res) => {
-  // Garantindo que a Vercel use o mesmo arquivo que a rota estática tenta servir.
-  res.sendFile(path.join(__dirname, 'dist/index.html')); 
+  // CORRIGIDO: Alinhado com o vercel.json (dist/pages/index.html)
+  res.sendFile(path.join(__dirname, 'dist/pages/index.html')); 
 });
 
 // Iniciar servidor
