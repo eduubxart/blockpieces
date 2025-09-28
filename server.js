@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // Rota fallback -> qualquer rota que não seja /api vai pro game
 app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/pages/game.html')); 
+  res.sendFile(path.join(__dirname, 'dist/pages/index.html')); 
 });
 
 // Iniciar servidor
