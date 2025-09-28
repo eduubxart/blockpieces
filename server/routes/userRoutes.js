@@ -1,10 +1,12 @@
-// aqui vamos importar o express para criar as rotas
-import express from 'express';//aqui ele vai importar o express
-import { registerUser } from '../controllers/UserController.js'; // importa a função que vai registrar o usuário
+import express from 'express';
+// Importação de userController.js
+import { registerUser, loginUser } from '../controllers/userController.js';
 
-const router = express.Router();// aqui ele vai criar uma rota usando o express
+const router = express.Router();
 
-router.post('/register', registerUser);// aqui ele vai criar uma rota do tipo post para registrar o usuário, quando o frontend fizer uma requisição para essa rota, ele vai chamar a função registrerUser que foi importada do controller
+// Rota para registrar (POST /api/users/register)
+router.post('/register', registerUser);
+// Rota para login (POST /api/users/login)
+router.post('/login', loginUser);
 
-export default router;// aqui ele vai exportar a rota para ser usada em outros arquivos
-//resumido bem, esse arquivo é responsável por criar as rotas da aplicação, nesse caso, a rota para registrar o usuário, e quando essa rota for chamada, ela vai chamar a função que está no controller para registrar o usuário no banco de dados.
+export default router;

@@ -1,9 +1,12 @@
 import express from 'express';
-import { saveScore } from '../controllers/gameController.js';
+// Importação de gameController.js
+import { updateScore, getRanking } from '../controllers/gameController.js'; 
 
 const router = express.Router();
 
-// Rota para salvar score
-router.post('/save-score', saveScore);
+// Rota para atualizar o placar (POST /api/game/score)
+router.post('/score', updateScore);
+// Rota para o ranking (GET /api/game/ranking)
+router.get('/ranking', getRanking);
 
 export default router;
