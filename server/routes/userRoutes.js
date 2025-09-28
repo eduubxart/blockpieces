@@ -1,6 +1,6 @@
 // aqui vamos importar o express para criar as rotas
 import express from 'express';//aqui ele vai importar o express
-import { registerUser } from '../controllers/userController.js'; // importa a função que vai registrar o usuário
+import { registerUser } from '../controllers/UserController.js'; // importa a função que vai registrar o usuário
 
 const router = express.Router();// aqui ele vai criar uma rota usando o express
 
