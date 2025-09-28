@@ -17,6 +17,11 @@
     {
       "src": "/api/(.*)",
       "dest": "server.js"
+    },
+    {
+      "src": "/",
+      "dest": "dist/pages/index.html"
     }
-   ]
-  }
+  ]
+}
+
