@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import userRoutes from './routes/userRoutes.js'; 
-import gameRoutes from './routes/gameRoutes.js'; // Importa as rotas de Jogo
+import userRoutes from './server/routes/userRoutes.js'; // CORRIGIDO: Adicionado 'server/'
+import gameRoutes from './server/routes/gameRoutes.js'; // CORRIGIDO: Adicionado 'server/'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
