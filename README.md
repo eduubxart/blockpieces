@@ -26,7 +26,6 @@ Um clone moderno do clássico jogo Tetris,desenvolvido em JavaScript/HTML5 Canva
 💾 Salvamento de score no banco
 
 📂 Estrutura
-tetris-game
 ├── server/         
 ├── public/        
 ├── server.js     
