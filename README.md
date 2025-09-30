@@ -1,6 +1,6 @@
-🧩 Tetris Game
-Um clone moderno do clássico jogo Tetris,desenvolvido em JavaScript/HTML5 Canvas com integração de backend em Node.Js + Express
-+MongoDB.
+🧩 TETRIS GAME
+
+Um clone moderno do clássico jogo Tetris,desenvolvido em JavaScript/HTML5 Canvas com integração de backend em Node.Js + Express +MongoDB.
 🚀 Tecnologias
 
 🎨 Frontend: HTML5, CSS3, JS (Canvas API)
