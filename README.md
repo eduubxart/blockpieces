@@ -26,7 +26,7 @@ Um clone moderno do clássico jogo Tetris,desenvolvido em JavaScript/HTML5 Canva
 💾 Salvamento de score no banco
 
 📂 Estrutura
-📦tetris-game
+tetris-game
 ├── server/         
 ├── public/        
 ├── server.js     
@@ -48,4 +48,4 @@ MONGO_URI=sua_string_de_conexao_mongodb
 npm run dev
 
 
-Abra em 👉 http://localhost:3000
+Abra em: http://localhost:3000
