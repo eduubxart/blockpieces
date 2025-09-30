@@ -25,14 +25,13 @@ Um clone moderno do clássico jogo Tetris,desenvolvido em JavaScript/HTML5 Canva
 
 💾 Salvamento de score no banco
 
-
 📂 Estrutura
 📦 tetris-game
-├── server/        # Rotas e modelos do backend
-├── public/        # Arquivos estáticos (HTML, CSS, JS)
-├── server.js      # Configuração do servidor Express
+├── server/         
+├── public/        
+├── server.js     
 ├── package.json   
-└── .env           # Variáveis de ambiente
+└── .env          
 ⚙️ Como rodar
 # Clone o repositório
 git clone https://github.com/SEU-USUARIO/tetris-game.git
