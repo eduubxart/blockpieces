@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 node_modules/
 dist/
 .env                                                    
 .vercel
+=======
+>>>>>>> 6092907405267d54c92e4a50627ee30d38d070b2

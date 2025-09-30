@@ -1,4 +1,3 @@
-
 const cvs = document.getElementById("gameCanvas");
 const con = cvs.getContext("2d");
 const scoreSist = document.getElementById("score");
@@ -72,6 +71,7 @@ function drawStars() {
   requestAnimationFrame(drawStars);
 }
 drawStars();
+
 const linha = 20;
 const col = 10;
 const sq = 30;
@@ -86,6 +86,9 @@ let gameOver = false;
 let gameStarted = false;
 let timer = 0;
 let timerInterval;
+
+// *** FLAG PRA PAUSAR INPUT / QUEDA ENQUANTO AS LINHAS PISCAM ***
+let isLocking = false;
 
 function resetBoard() {
   bord = [];
@@ -110,13 +113,13 @@ function tab() {
 import { Z, S, T, O, L, I, J } from "./matrizes.js";
 
 const pecas = [
-    [Z, "red"],
-    [S, "green"],
-    [T, "yellow"],
-    [O, "blue"],
-    [L, "purple"],
-    [I, "cyan"],
-    [J, "orange"]
+  [Z, "red"],
+  [S, "green"],
+  [T, "yellow"],
+  [O, "blue"],
+  [L, "purple"],
+  [I, "cyan"],
+  [J, "orange"],
 ];
 
 function geraPecas() {
@@ -215,7 +218,14 @@ Piece.prototype.rotate = function () {
   }
 };
 
+/*
+  FIX principal: prevenir concorrência entre lock() e o loop de queda.
+  - isLocking = true enquanto piscagem/remoção de linhas acontece.
+  - Drop loop não chama moveDown durante isLocking.
+  - Depois de spawnar a próxima peça, isLocking=false e lastDropTime resetado.
+*/
 Piece.prototype.lock = function () {
+  // coloca a peça no board
   for (let r = 0; r < this.ativarTetromino.length; r++) {
     for (let c = 0; c < this.ativarTetromino[r].length; c++) {
       if (!this.ativarTetromino[r][c]) continue;
@@ -227,14 +237,17 @@ Piece.prototype.lock = function () {
     }
   }
 
-  
+  // pausa a queda e input até terminar o processo de lock (piscar/remover)
+  isLocking = true;
 
+  // coleta todas as linhas completas (todas)
   let linhasCompletas = [];
   for (let r = linha - 1; r >= 0; r--) {
     if (bord[r].every((cell) => cell != quad)) linhasCompletas.push(r);
   }
 
   if (linhasCompletas.length > 0) {
+    // pisca todas juntas e depois remove todas de uma vez
     let blinkCount = 0;
     const originalColors = linhasCompletas.map((r) => [...bord[r]]);
     const blinkInterval = setInterval(() => {
@@ -247,66 +260,118 @@ Piece.prototype.lock = function () {
       blinkCount++;
       if (blinkCount > 5) {
         clearInterval(blinkInterval);
+
+        // remover em ordem descendente pra não bagunçar índices
         linhasCompletas
-          .slice() // cria uma cópia para não alterar o array original
+          .slice()
           .sort((a, b) => b - a)
           .forEach((r) => {
             bord.splice(r, 1);
-            bord.unshift(Array(col).fill(quad)); // adiciona uma linha vazia no topo
           });
+
+        // empurra linhas vazias pro topo (na quantidade removida)
+        for (let i = 0; i < linhasCompletas.length; i++) {
+          bord.unshift(Array(col).fill(quad));
+        }
+
+        // atualizar score/level/velocidade
         score += 10 * linhasCompletas.length;
         lines += linhasCompletas.length;
         level = Math.floor(score / 50) + 1;
         dropSpeed = Math.max(1000 - (level - 1) * 100, 200);
         updateScore();
         tab();
+
+        // spawn da próxima peça (uma só vez)
         p = nextP;
         nextP = geraPecas();
         drawNextPiece(nextP);
+        if (p) p.draw();
+
+        // libera a queda / input e reseta timer do drop
+        isLocking = false;
+        lastDropTime = 0;
       }
     }, 100);
   } else {
+    // sem linhas completas => troca normal e libera imediatamente
     updateScore();
     tab();
-  }
+
     p = nextP;
     nextP = geraPecas();
     drawNextPiece(nextP);
-  };
-  function drawNextPiece(piece) {
-    nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-    nextCanvas.width = nextCanvas.width;  // isso força reset total
+    if (p) p.draw();
 
-    if (!piece || !piece.tetromino || !piece.tetromino[0]) return;
+    isLocking = false;
+    lastDropTime = 0;
+  }
+};
 
-    let shape = piece.tetromino[0];
-    const size = 30;
-    const pieceWidth = shape[0].length * size;
-    const pieceHeight = shape.length * size;
-    const offsetX = (nextCanvas.width - pieceWidth) / 2;
-    const offsetY = (nextCanvas.height - pieceHeight) / 2;
+// ======= Ajuste do canvas de preview (pra evitar artefatos de tamanho) =======
+// definimos o tamanho interno do canvas com base no CSS (uma vez e no resize)
+// NÃO usamos "nextCanvas.width = nextCanvas.width" dentro do draw (isso causava glitch)
+function resizeNextCanvas() {
+  // garante resolução correta (evita escala que deixa "resto" de desenho)
+  nextCanvas.width = Math.max(64, Math.floor(nextCanvas.clientWidth));
+  nextCanvas.height = Math.max(64, Math.floor(nextCanvas.clientHeight));
+}
+window.addEventListener("resize", resizeNextCanvas);
+resizeNextCanvas();
 
-    for (let r = 0; r < shape.length; r++) {
-        for (let c = 0; c < shape[r].length; c++) {
-            if (shape[r][c]) {
-                nextCtx.fillStyle = piece.cor;
-                nextCtx.fillRect(offsetX + c * size, offsetY + r * size, size, size);
-                nextCtx.strokeStyle = "#222";
-                nextCtx.strokeRect(offsetX + c * size, offsetY + r * size, size, size);
-            }
-        }
+function drawNextPiece(piece) {
+  // limpa o conteúdo (clearRect é suficiente)
+  nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
+
+  if (!piece || !piece.tetromino || !piece.tetromino[0]) return;
+
+  let shape = piece.tetromino[0];
+  const size = 30;
+  const pieceWidth = shape[0].length * size;
+  const pieceHeight = shape.length * size;
+  const offsetX = (nextCanvas.width - pieceWidth) / 2;
+  const offsetY = (nextCanvas.height - pieceHeight) / 2;
+
+  for (let r = 0; r < shape.length; r++) {
+    for (let c = 0; c < shape[r].length; c++) {
+      if (shape[r][c]) {
+        nextCtx.fillStyle = piece.cor;
+        nextCtx.fillRect(
+          Math.floor(offsetX + c * size),
+          Math.floor(offsetY + r * size),
+          size,
+          size
+        );
+        nextCtx.strokeStyle = "#222";
+        nextCtx.strokeRect(
+          Math.floor(offsetX + c * size),
+          Math.floor(offsetY + r * size),
+          size,
+          size
+        );
+      }
     }
+  }
 }
 
-
+// ======= Loop de queda (usar requestAnimationFrame com timestamp) =======
 let lastDropTime = 0;
-function dropLoop() {
-  if (!gameOver) {
-    p.moveDown();
-    tab();
-    p.draw();
-    setTimeout(dropLoop, dropSpeed);
+function dropLoop(time) {
+  if (!gameStarted || gameOver) return;
+  if (!lastDropTime) lastDropTime = time;
+
+  // se isLocking true, não chamamos moveDown até liberar (evita re-locks)
+  if (!isLocking) {
+    const delta = time - lastDropTime;
+    if (delta >= dropSpeed) {
+      if (p) p.moveDown();
+      lastDropTime = time;
+      tab();
+      if (p) p.draw();
+    }
   }
+
+  requestAnimationFrame(dropLoop);
 }
 
 // ==========================
@@ -328,11 +393,14 @@ function startGame() {
   gameOver = false;
   p = geraPecas();
   nextP = geraPecas();
+  // ajusta preview pra resolução atual antes de desenhar
+  resizeNextCanvas();
   drawNextPiece(nextP);
   p.draw();
   tab();
   updateScore();
   iniciarTimer();
+  lastDropTime = 0;
   requestAnimationFrame(dropLoop);
 }
 
@@ -351,17 +419,22 @@ function restartGame() {
   gameOver = false;
   p = geraPecas();
   nextP = geraPecas();
+  resizeNextCanvas();
   drawNextPiece(nextP);
   p.draw();
   updateScore();
+  lastDropTime = 0;
+  // não dispara o loop automaticamente aqui (a tecla Enter/start faz)
 }
+
 document.addEventListener("keydown", function (event) {
   if (event.keyCode == 13) {
     if (!gameStarted) startGame();
     else if (gameOver) restartGame();
   }
   if ([37, 38, 39, 40].includes(event.keyCode)) event.preventDefault();
-  if (gameStarted && !gameOver) {
+  // bloqueia controles se estiver piscando/removendo linhas
+  if (gameStarted && !gameOver && !isLocking) {
     if (event.keyCode == 37) p.moveLeft();
     if (event.keyCode == 38) p.rotate();
     if (event.keyCode == 39) p.moveRight();
@@ -379,19 +452,18 @@ async function gameOverHandler() {
 
   try {
     // envia score pro backend
-    const res = await fetch('/api/users/score', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/users/score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: currentUser.username,
-        score: score
-      })
+        score: score,
+      }),
     });
 
     if (!res.ok) {
       console.error("Erro ao enviar score:", await res.text());
     }
-
   } catch (error) {
     console.error("Erro no gameOverHandler:", error);
   }
