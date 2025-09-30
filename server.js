@@ -29,7 +29,7 @@ app.use('/api/game', gameRoutes);
 // Rota fallback -> qualquer rota que não seja /api vai para a página principal (index.html)
 app.get(/^\/(?!api).*/, (req, res) => {
   // CORRIGIDO: Alinhado com o vercel.json (dist/pages/index.html)
-  res.sendFile(path.join(__dirname, 'dist/pages/index.html')); 
+  res.sendFile(path.join(__dirname, 'dist/server/entrada.html')); 
 });
 
 // Iniciar servidor

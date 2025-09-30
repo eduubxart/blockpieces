@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, 'src/pages/index.html') // entrada principal
+        main: path.resolve(__dirname, 'src/pages/entrada.html') // entrada principal
       }
     },
     outDir: path.resolve(__dirname, 'dist'), // pasta do build
